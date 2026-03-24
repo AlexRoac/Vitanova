@@ -1,5 +1,6 @@
 import React from 'react'
 import './loginform.css'
+import { Link } from 'react-router-dom';
 
 function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoChange, onPasswordChange, onSubmit }) {
   return (
@@ -61,7 +62,7 @@ function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoCh
         </form>
 
         <p className="register">
-          ¿Todavía no te has registrado? <a href="/register">Crea una cuenta</a>
+          ¿Todavía no te has registrado? <Link to="/register">Crea una cuenta</Link>
         </p>
       </div>
     </div>
