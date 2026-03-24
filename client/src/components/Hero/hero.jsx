@@ -1,5 +1,5 @@
 import "./hero.css";
-import {psicologia} from "../../assets/index";
+import {default as psicologia} from "../../assets/psicologia.png";
 function Hero() {
     return (
     <>
