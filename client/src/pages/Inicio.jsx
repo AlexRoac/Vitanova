@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // <-- Importamos useNavigate para cambiar de página
-//import inicio from "../components/inicio/inicio";
-
+import NavBar from "../components/NavBar/navbar";
+import Hero from "../components/Hero/hero";
+import Footer from "../components/Footer/Footer";
 function Inicio() {
     return (
-        <div>
-            <h1>Bienvenido a la página principal</h1>
-            <p>Esta es la página de índice.</p>
-        </div>
-    );
-
+        <>
+            <NavBar />
+            <Hero />
+            <Footer />
+        </>
+    )
 }
-
 export default Inicio;
