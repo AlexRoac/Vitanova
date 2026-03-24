@@ -1,6 +1,6 @@
 import "./navbar.css";
-import {logoV3} from "../../assets/index";
-import {logoV4} from "../../assets/index";
+import {default as logoV3} from "../../assets/Logo_Vita3.png";
+import {default as logoV4} from "../../assets/Logo_Vita4.png";
 
 function NavBar() {
     return (
