@@ -4,7 +4,7 @@ import {default as logoV4} from "../../assets/Logo_Vita4.png";
 
 function NavBar() {
         const handleLogin = () => {
-        window.location.href = "/login"
+        window.location.href = "/Login"
     }
 
     const handleSignup = () => {
