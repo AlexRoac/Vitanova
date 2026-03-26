@@ -1,6 +1,3 @@
 /node_modules
-<<<<<<< HEAD
-=======
 # Variables de entorno y secretos
->>>>>>> 40d3f7e97bc9f268b386c95de3fee031cbcd3aa9
 .env

@@ -3,19 +3,11 @@ const { Pool } = require("pg");
 
 
 const pool = new Pool({
-<<<<<<< HEAD
-  user: "postgres",
-  password: "admin",
-  host: "localhost", 
-  port: 5432,
-  database: "vitanova"
-=======
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD, 
   database: process.env.DB_NAME,    
   host: "localhost",                 
   port: 5432,                         
->>>>>>> 40d3f7e97bc9f268b386c95de3fee031cbcd3aa9
 });
 
 // Verificación automática de la conexión
