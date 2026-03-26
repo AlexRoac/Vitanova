@@ -17,9 +17,6 @@
   color: white;
 }
 
-
-
-
 .fcontainer h3 {
   font-size: 1.1rem;
   font-weight: 600;
@@ -35,7 +32,6 @@
   color: #d1d1d1;
 }
 
-
 .datos-columna {
   display: flex;
   flex-direction: column;
@@ -43,7 +39,6 @@
   text-align: center;
   font-size: 0.9rem;
 }
-
 
 .footer-input {
   width: 100%;
@@ -54,7 +49,6 @@
   border: none;
   background: #D9D9D9;
 }
-
 
 .footer-button {
   width: 100%;
