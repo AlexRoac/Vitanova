@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // <-- Importamos useNavigate para cambiar de página
+import { useNavigate } from "react-router-dom"; 
 import LoginForm from "../components/loginform/loginform";
 
 function Login() {
@@ -19,7 +19,6 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        // Mapeamos 'correo' a 'email' para que el backend lo entienda
         body: JSON.stringify({ email: correo, password }), 
       });
 
@@ -30,20 +29,17 @@ function Login() {
         return;
       }
 
-      // --- AQUÍ SUCEDE LA MAGIA DEL TOKEN Y LA REDIRECCIÓN ---
+      //TOKEN Y REDIRECCIÓN 
       
-      // 1. Guardamos el token en el almacenamiento local del navegador
+      // Guardamos el token en el almacenamiento local del navegador
       localStorage.setItem("token", data.token);
 
-      // 2. Opcional pero recomendado: Guardamos los datos básicos del usuario
-      // por si quieres mostrar su nombre en la barra de navegación del inicio
+      // Guardamos los datos básicos del usuario
       localStorage.setItem("usuario", JSON.stringify(data.user));
 
-      // 3. Mostramos la alerta de bienvenida
       alert("Bienvenido " + data.user.nombre);
 
-      // 4. Redirigimos a la ruta "/inicio" (sin el .jsx)
-      navigate("/inicio");
+      navigate("/dashboard");
       
     } catch (error) {
       console.error(error);
