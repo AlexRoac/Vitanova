@@ -8,9 +8,7 @@ body, html, #root {
   width: 100%;
   min-height: 100%;
   font-family: "Inter", "Segoe UI", Roboto, sans-serif;
-  background-image: url('../../assets/fondo.webp');
-  background-size: cover;
-  background-position: center;
+
 }
 
 .login-page {
@@ -19,8 +17,21 @@ body, html, #root {
   justify-content: center;
   min-height: 100vh;
   padding: 1.5rem;
+    background-image: url('../../assets/fondo.webp');
+  background-size: cover;
+  background-position: center;
   backdrop-filter: blur(8px); 
   -webkit-backdrop-filter: blur(8px);
+}
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  background: rgba(0,0,0,0.2); /* opcional, mejora contraste */
 }
 
 .login-card {
@@ -29,6 +40,8 @@ body, html, #root {
   border-radius: 18px;
   box-shadow: 0 20px 55px rgba(0, 0, 0, 0.2);
   padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .login-card h1 {

@@ -1,0 +1,43 @@
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+  background-color: #f5f7f8;
+}
+
+/* caja centrada bonita */
+.error-box {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.error-title {
+  font-size: 60px;
+  margin: 0;
+  color: #1f3c44;
+}
+
+.error-text {
+  font-size: 18px;
+  margin: 10px 0 20px;
+  color: #5f6f73;
+}
+
+.error-btn {
+  padding: 12px 24px;
+  background-color: #2f6f73;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: 0.3s;
+}
+
+.error-btn:hover {
+  background-color: #255a5d;
+}
