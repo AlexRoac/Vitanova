@@ -6,7 +6,7 @@ import Inicio from './pages/Inicio';
 import Dashboard from './pages/Dashboard';
 import Gestion from './pages/Gestion';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import Error404 from './pages/Error404';
+import Error404 from './components/Error404/error404';
 
 import './App.css';
 

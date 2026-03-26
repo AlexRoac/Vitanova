@@ -49,7 +49,7 @@ function Hero() {
                 ) : (
                     <a href="/login" className="btn-primary">Agendar cita</a>
                 )}
-                <a href="#" className="btn-secondary">Ver servicios</a>
+                <a href="/pagina-que-no-exister" className="btn-secondary">Ver servicios</a>
             </div>
         </div>
         <div className="hero-image">
