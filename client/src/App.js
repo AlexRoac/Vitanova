@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Inicio from './pages/Inicio';
+import UDash from './pages/UDash';
 import './App.css';
 
 function App() {
@@ -10,10 +11,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-    
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/inicio" element={<Inicio />} />
+        <Route path="/udash" element={<UDash />} />
       </Routes>
     </Router>
   );
