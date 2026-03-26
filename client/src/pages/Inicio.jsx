@@ -6,9 +6,13 @@ import Footer from "../components/Footer/Footer";
 function Inicio() {
     return (
         <>
+        <div className="page-container">
             <NavBar />
-            <Hero />
+            <div className="page-content">
+                <Hero />
+            </div>
             <Footer />
+        </div>
         </>
     )
 }

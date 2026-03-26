@@ -4,9 +4,13 @@ import Footer from "../components/Footer/Footer";
 function UDash() {
     return (
         <>
+        <div className="page-container">
             <NavBar />
-            <Dashboard/>
+            <div className="page-content">
+                <Dashboard/>
+            </div>
             <Footer />
+        </div>
         </>
     )
 }

@@ -128,7 +128,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px', marginTop: '20px' }}>
-                <button type="button" className="submit-btn" style={{ backgroundColor: '#95a5a6' }} onClick={prevStep}>
+                <button type="button" className="submit-btn" onClick={prevStep}>
                   Regresar
                 </button>
                 <button type="submit" className="submit-btn">

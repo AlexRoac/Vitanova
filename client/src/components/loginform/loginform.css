@@ -2,25 +2,15 @@
   box-sizing: border-box;
 }
 
-body, html, #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
-  background-image: url('../../assets/fondo.webp');
-  background-size: cover;
-  background-position: center;
-}
-
 .login-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 1.5rem;
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
+  background: url("../../assets/Fondo.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
 .login-card {
@@ -131,7 +121,7 @@ body, html, #root {
 }
 
 .submit-btn {
-  background: linear-gradient(130deg, #3d81f7 0%, #6e48ff 100%);
+  background: #B8D5DE;
   color: #fff;
   margin-top: 0.6rem;
 }
