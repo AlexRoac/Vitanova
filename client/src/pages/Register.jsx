@@ -2,10 +2,8 @@ import { useState } from "react";
 import RegisterForm from "../components/registerform/registerform";
 
 function Register() {
-  // Estado para controlar en qué paso del formulario estamos (1 o 2)
   const [step, setStep] = useState(1);
 
-  // Estado unificado para todos los datos del formulario
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,7 +16,6 @@ function Register() {
     estado_civil: ""
   });
 
-  // Función para manejar los cambios en CUALQUIER input
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,11 +23,9 @@ function Register() {
     });
   };
 
-  // Funciones para avanzar y retroceder de paso
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-  // Petición al backend al finalizar el paso 2
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -51,7 +46,7 @@ function Register() {
       }
 
       alert("Registro exitoso. ¡Bienvenido, " + data.user.nombre + "!");
-      // window.location.href = '/login'; // Descomenta esto para redirigir al login
+      window.location.href = '/login';
       
     } catch (error) {
       console.error(error);
