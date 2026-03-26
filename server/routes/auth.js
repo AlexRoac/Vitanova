@@ -11,9 +11,12 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Buscamos al usuario por email y verificamos que su cuenta esté activa
+    // 1. Buscamos al usuario por email y HACEMOS UN JOIN para traer el nombre de su rol
     const result = await pool.query(
-      "SELECT * FROM usuarios WHERE email = $1 AND activo = true",
+      `SELECT u.*, r.nombre_rol 
+       FROM usuarios u
+       JOIN roles r ON u.id_rol = r.id_rol
+       WHERE u.email = $1 AND u.activo = true`,
       [email]
     );
 
@@ -23,7 +26,7 @@ router.post("/login", async (req, res) => {
 
     const user = result.rows[0];
 
-    // Comparamos la contraseña enviada con el hash guardado en la BD
+    // 2. Comparamos la contraseña enviada con el hash guardado en la BD
     const validPassword = await bcrypt.compare(
       password,
       user.password_hash
@@ -34,15 +37,18 @@ router.post("/login", async (req, res) => {
     }
 
     // --- GENERAR EL TOKEN JWT ---
-    // Creamos un payload con el id del usuario
+    // 3. Creamos un payload con el id del usuario Y SU ROL
     const payload = {
-      usuario: { id: user.id_usuario }
+      usuario: { 
+        id: user.id_usuario,
+        rol: user.nombre_rol // Agregamos el rol al token por seguridad
+      }
     };
 
     // Firmamos el token (puedes cambiar "mi_secreto_super_seguro" por otra frase)
-    const token = jwt.sign(payload, "mi_secreto_super_seguro", { expiresIn: "2h" });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
 
-    // Login exitoso: Devolvemos los datos básicos del usuario y el TOKEN
+    // 4. Login exitoso: Devolvemos los datos básicos del usuario, el TOKEN y EL ROL
     res.json({
       msg: "Login exitoso",
       token: token, // <-- Enviamos el token al frontend
@@ -51,6 +57,7 @@ router.post("/login", async (req, res) => {
         nombre: user.nombre,
         apellido: user.apellido,
         email: user.email,
+        rol: user.nombre_rol, // <-- ¡Enviamos el rol a React!
       },
     });
 
@@ -93,16 +100,16 @@ router.post("/register", async (req, res) => {
     const password_hash = await bcrypt.hash(password, salt);
 
     // 4. Preparar la fecha de nacimiento
-    // Si desde el frontend mandan un string vacío "", a Postgres no le gusta en un campo DATE. 
-    // Lo convertimos a null si viene vacío.
     const fechaNacimientoValida = fecha_nacimiento ? fecha_nacimiento : null;
 
-    // 5. Insertar el nuevo usuario en la base de datos con todos sus datos del perfil
+    // 5. Insertar el nuevo usuario en la base de datos
+    // NOTA: No enviamos "id_rol" aquí. PostgreSQL automáticamente le asignará "1" (paciente) 
+    // gracias al DEFAULT 1 que configuramos en la base de datos.
     const newUser = await pool.query(
       `INSERT INTO usuarios 
       (email, password_hash, nombre, apellido, telefono, fecha_nacimiento, ocupacion, genero, estado_civil) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
-      RETURNING id_usuario, nombre, apellido, email`,
+      RETURNING id_usuario, nombre, apellido, email, id_rol`,
       [
         email, 
         password_hash, 
