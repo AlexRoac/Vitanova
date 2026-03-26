@@ -1,4 +1,4 @@
-.contenedor-azul {
+.footer-container {
   display: flex;
   background-color: #202343;
   width: 100%;
@@ -6,7 +6,8 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-.cuadro {
+
+.fcontainer {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -17,14 +18,17 @@
 }
 
 
-.cuadro h3 {
+
+
+.fcontainer h3 {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.cuadro p {
+
+.fcontainer p {
   font-size: 0.9rem;
   margin-bottom: 15px;
   text-align: center;
@@ -60,18 +64,35 @@
   cursor: pointer;
 }
 
-.datos-lista {
+
+.footer-contact {
   list-style: none;  
-  padding: 0;         
+  padding: 0;        
   margin: 0;          
   display: flex;
   flex-direction: column;
-  gap: 15px;         
+  gap: 15px;        
   align-items: center;
 }
 
-.datos-lista li {
+
+.footer-contact li {
   font-size: 0.95rem;
   color: white;
-  font-family: 'Segoe UI', sans-serif; 
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .fcontainer {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 30px;
+  }
 }
