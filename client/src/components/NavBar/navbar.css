@@ -4,11 +4,14 @@
     justify-content: space-between;
     align-items: center;
     background-color: #B8D5DE;
+    padding: 0 20px; 
+    flex-wrap: wrap;
 }
 .logo-container{
     display: flex;
     align-items: center;
     margin: 10px;
+    gap: 10px;
 }
 .logoV3{
     width: 70px;
@@ -36,9 +39,66 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
 }
 .menu-btn:hover{
     background-color: #2a6d7c;
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+/* ICONO DE USUARIO */
+.user-icon {
+  display: none; /* oculto en desktop */
+  font-size: 32px;
+  color: #2f6f73; /* mismo tono que tus botones */
+  cursor: pointer;
+  margin: 10px;
+
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* hover bonito */
+.user-icon:hover {
+  transform: scale(1.1);
+  color: #255a5d;
+}
+/* --- Media Query para Tablets (Menos de 768px) --- */
+@media (max-width: 768px) {
+    .container-nav {
+        justify-content: center; /* Centra todo en tablets */
+        padding: 10px;
+    }
+    
+    .logo-container {
+        margin-bottom: 5px;
+    }
+
+
+    .menu-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+
+/* --- Media Query para Móviles (Menos de 480px) --- */
+@media (max-width: 480px) {
+    .container-nav {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* ❌ ocultar botones */
+    .menubtn-container {
+        display: none;
+    }
+
+    /* ✅ mostrar icono */
+    .user-icon {
+        display: block;
+    }
+
+    .logoV3 { width: 60px; }
+    .logoV4 { width: 80px; }
 }
