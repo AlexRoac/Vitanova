@@ -1,13 +1,13 @@
 import NavBar from "../components/NavBar/navbar";
-import Hero from "../components/Hero/hero";
+import Dashboard from "../components/Dashboard/Dashboard";
 import Footer from "../components/Footer/Footer";
-function Inicio() {
+function UDash() {
     return (
         <>
             <NavBar />
-            <Hero />
+            <Dashboard/>
             <Footer />
         </>
     )
 }
-export default Inicio;
+export default UDash;
