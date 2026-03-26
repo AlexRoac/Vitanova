@@ -7,8 +7,8 @@ function NavBar() {
         window.location.href = "/Login"
     }
 
-    const handleSignup = () => {
-        window.location.href = "/signup"
+    const handleRegister = () => {
+        window.location.href = "/Register"
     }
     return (
         <>
@@ -17,10 +17,10 @@ function NavBar() {
                 <img src={logoV3} alt="Logo V3" className="logoV3" />
                 <img src={logoV4} alt="Logo V4" className="logoV4" />
             </div>
-            <div className="menubtn-container">
+            {/* <div className="menubtn-container">
                 <button className="menu-btn" onClick={handleLogin}>Log in</button>
-                <button className="menu-btn" onClick={handleSignup}>Sign up</button>
-            </div>
+                <button className="menu-btn" onClick={handleRegister}>Sign up</button>
+            </div> */}
         </div>
         </>
     )
