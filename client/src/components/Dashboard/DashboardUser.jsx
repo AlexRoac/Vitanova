@@ -1,0 +1,45 @@
+import { useState, useEffect } from "react";
+import "./Dashboard.css";
+
+function DashboardUser() {
+
+    const [usuario, setUsuario] = useState(null);
+
+    useEffect(() => {
+        const usuarioGuardado = localStorage.getItem("usuario");
+        if (usuarioGuardado) {
+            setUsuario(JSON.parse(usuarioGuardado));
+        }
+    }, []);
+
+    return (
+        <>
+        <div className="container-cards">
+            <h1>Bienvenido, {usuario?.nombre || "Cargando..."}</h1>
+            
+            <div className="row m-4">
+                <div className="col-lg-6 col-md-12 col-sm-12 colcard">
+                    <a href="">
+                        <div className="card p-2 align-items-center">
+                            <h1>📖</h1>
+                            <h1>Agendar cita</h1>
+                            <p className="card-text">Programar una nueva cita</p>
+                        </div>
+                    </a>
+                </div>
+                <div className="col-lg-6 col-md-12 col-sm-12 colcard">
+                    <a href="">
+                        <div className="card  p-2 align-items-center">
+                            <h1>📅</h1>
+                            <h1>Mis Citas</h1>
+                            <p className="card-text">Ver citas programadas</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </>
+    )
+}
+
+export default DashboardUser;

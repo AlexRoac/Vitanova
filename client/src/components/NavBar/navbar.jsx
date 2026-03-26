@@ -1,35 +1,79 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import "./navbar.css";
 import { default as logoV3 } from "../../assets/Logo_Vita3.png";
 import { default as logoV4 } from "../../assets/Logo_Vita4.png";
-import { FaUserCircle } from "react-icons/fa";
 
 function NavBar() {
-  const handleLogin = () => {
-    window.location.href = "/Login";
-  };
+    const navigate = useNavigate();
+    
+    // Guardamos todo el objeto del usuario, no solo si está logueado
+    const [usuario, setUsuario] = useState(null);
 
-  const handleRegister = () => {
-    window.location.href = "/Register";
-  };
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const usuarioGuardado = localStorage.getItem("usuario");
+        
+        if (token && usuarioGuardado) {
+            setUsuario(JSON.parse(usuarioGuardado));
+        } else {
+            setUsuario(null);
+        }
+    }, []);
 
-  return (
-    <div className="container-nav">
-      <div className="logo-container">
-        <img src={logoV3} alt="Logo V3" className="logoV3" />
-        <img src={logoV4} alt="Logo V4" className="logoV4" />
-      </div>
+    const handleLogin = () => navigate("/login");
+    const handleRegister = () => navigate("/register");
 
-      {/* BOTONES (desktop) */}
-      <div className="menubtn-container">
-        <button className="menu-btn" onClick={handleLogin}>Log in</button>
-        <button className="menu-btn" onClick={handleRegister}>Sign up</button>
-      </div>
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("usuario");
+        setUsuario(null);
+        navigate("/login");
+    };
 
-     <div className="user-icon" onClick={handleLogin}>
-  <FaUserCircle />
-</div>
-    </div>
-  );
+    return (
+        <div className="container-nav">
+            <div className="logo-container">
+                <img src={logoV3} alt="Logo V3" className="logoV3" />
+                <img src={logoV4} alt="Logo V4" className="logoV4" />
+            </div>
+            
+            <div className="menubtn-container">
+                {usuario ? (
+                    // ==========================================
+                    // SI EL USUARIO ESTÁ LOGUEADO (Vemos su rol)
+                    // ==========================================
+                    <>
+                        {/* Botones SOLO para el ADMIN */}
+                        {usuario.rol === 'admin' && (
+                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Panel Admin</button>
+                        )}
+
+                        {/* Botones SOLO para el PSICÓLOGO */}
+                        {usuario.rol === 'psicologo' && (
+                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Mis Pacientes</button>
+                        )}
+
+                        {/* Botones SOLO para el PACIENTE */}
+                        {usuario.rol === 'paciente' && (
+                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Mis Citas</button>
+                        )}
+
+                        {/* Botón COMPARTIDO (Todos lo ven si iniciaron sesión) */}
+                        <button className="menu-btn logout-btn" onClick={handleLogout}>Cerrar sesión</button>
+                    </>
+                ) : (
+                    // ==========================================
+                    // SI ES UN VISITANTE SIN SESIÓN
+                    // ==========================================
+                    <>
+                        <button className="menu-btn" onClick={handleLogin}>Log in</button>
+                        <button className="menu-btn" onClick={handleRegister}>Sign up</button>
+                    </>
+                )}
+            </div>
+        </div>
+    )
 }
 
 export default NavBar;

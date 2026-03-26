@@ -1,0 +1,45 @@
+import { useState, useEffect } from "react";
+import "./Dashboard.css";
+
+function DashboardPsico() {
+
+    const [usuario, setUsuario] = useState(null);
+
+    useEffect(() => {
+        const usuarioGuardado = localStorage.getItem("usuario");
+        if (usuarioGuardado) {
+            setUsuario(JSON.parse(usuarioGuardado));
+        }
+    }, []);
+
+    return (
+        <>
+        <div className="container-cards">
+            <h1>Bienvenido, {usuario?.nombre || "Cargando..."}</h1>
+            
+            <div className="row m-4">
+                <div className="col-lg-6 col-md-12 col-sm-12 colcard">
+                    <a href="">
+                        <div className="card p-2 align-items-center">
+                            <h1>📖</h1>
+                            <h1>Mis Pacientes</h1>
+                            <p className="card-text">ver mis Pacientes </p>
+                        </div>
+                    </a>
+                </div>
+                <div className="col-lg-6 col-md-12 col-sm-12 colcard">
+                    <a href="">
+                        <div className="card  p-2 align-items-center">
+                            <h1>📅</h1>
+                            <h1>Mis Horarios</h1>
+                            <p className="card-text">ver mis Horarios </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </>
+    )
+}
+
+export default DashboardPsico;
