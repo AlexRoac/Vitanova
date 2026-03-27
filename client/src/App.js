@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Inicio from './pages/Inicio';
@@ -7,27 +9,35 @@ import Dashboard from './pages/Dashboard';
 import Gestion from './pages/Gestion';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Error404 from './components/Error404/error404';
+import CompletarPerfil from './pages/CompletarPerfil';
 
 import './App.css';
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/inicio" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/inicio" element={<Inicio />} />
-        <Route path="*" element={<Error404 />} />
+  // Leemos la variable de entorno
+  const clientId = process.env.GOOGLE_CLIENT_ID;
 
-        <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-          <Route path="/gestion" element={<Gestion />} />
-        </Route>
-      </Routes>
-    </Router>
+  return (
+    <GoogleOAuthProvider clientId="771373802222-18a7j9qeav7miehmflrul7n91mc8ac2m.apps.googleusercontent.com">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/inicio" />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/inicio" element={<Inicio />} />
+          <Route path="*" element={<Error404 />} />
+          <Route path="/completar-perfil" element={<CompletarPerfil />} />
+
+          <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+          
+          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+            <Route path="/gestion" element={<Gestion />} />
+          </Route>
+        </Routes>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 

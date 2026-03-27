@@ -1,17 +1,21 @@
 import React from 'react'
 import './loginform.css'
 import { Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 
-function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoChange, onPasswordChange, onSubmit }) {
+function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoChange, onPasswordChange, onSubmit, onGoogleSuccess, onGoogleError }) {
   return (
     <div className="login-page">
       <div className="login-card">
         <h1>Iniciar sesión</h1>
 
-        <button type="button" className="login-google">
-          <span className="google-icon" aria-hidden="true">G  </span>
-           Continuar con Google
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '15px' }}>
+          <GoogleLogin
+            onSuccess={onGoogleSuccess}
+            onError={onGoogleError}
+            width="100%" // Intenta ocupar el ancho disponible para que se vea bien
+          />
+        </div>
 
         <div className="divider">
           <span></span>
