@@ -12,6 +12,16 @@
   background-size: cover;
   background-position: center;
 }
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  background: rgba(0,0,0,0.2); /* opcional, mejora contraste */
+}
 
 .login-card {
   width: clamp(300px, 90vw, 420px);
@@ -19,6 +29,8 @@
   border-radius: 18px;
   box-shadow: 0 20px 55px rgba(0, 0, 0, 0.2);
   padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .login-card h1 {
