@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import LoginForm from "../components/loginform/loginform";
 
@@ -9,6 +9,16 @@ function Login() {
   
   // Inicializamos el hook de navegación
   const navigate = useNavigate(); 
+
+  //Manda el que ingreses del footer al login, no le muevan
+  useEffect(()=>{
+    const savedEmail = localStorage.getItem("prefillEmail");
+
+    if (savedEmail){
+      setCorreo(savedEmail);
+      localStorage.removeItem("prefillEmail");
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

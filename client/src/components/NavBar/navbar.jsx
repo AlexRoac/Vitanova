@@ -28,7 +28,7 @@ function NavBar() {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
         setUsuario(null);
-        navigate("/login");
+        navigate("/inicio   ");
     };
 
     return (
@@ -67,8 +67,8 @@ function NavBar() {
                     // SI ES UN VISITANTE SIN SESIÓN
                     // ==========================================
                     <>
-                        <button className="menu-btn" onClick={handleLogin}>Log in</button>
-                        <button className="menu-btn" onClick={handleRegister}>Sign up</button>
+                        <button className="menu-btn" onClick={handleLogin}>Iniciar sesión</button>
+                        <button className="menu-btn" onClick={handleRegister}> Regístrate</button>
                     </>
                 )}
             </div>

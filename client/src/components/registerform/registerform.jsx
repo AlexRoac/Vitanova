@@ -9,6 +9,8 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
   
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const today = new Date().toISOString().split("T")[0];
+
   const handleNext = (e) => {
     e.preventDefault();
     if (formData.password !== confirmPassword) {
@@ -37,7 +39,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
             <form className="login-form" onSubmit={handleNext}>
               <label>Correo electrónico</label>
               <input
-                type="email" name="email"
+                type="email" name="email" placeholder='correo@ejemplo.com'
                 value={formData.email} onChange={handleChange}
                 required
               />
@@ -45,7 +47,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
               <label>Contraseña</label>
               <div className="password-container">
                 <input
-                  type={showPassword ? 'text' : 'password'} name="password"
+                  type={showPassword ? 'text' : 'password'} name="password" placeholder='password'
                   value={formData.password} onChange={handleChange}
                   required
                 />
@@ -57,6 +59,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
               <label>Confirmar contraseña</label>
               <div className="password-container">
                 <input
+                  placeholder='confirm password'
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
                   required
@@ -97,7 +100,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <div style={{ flex: 1 }}>
                   <label>Fecha de nacimiento</label>
-                  <input type="date" name="fecha_nacimiento" value={formData.fecha_nacimiento} onChange={handleChange} required />
+                  <input type="date" name="fecha_nacimiento" min="1900-12-31" max={today} value={formData.fecha_nacimiento} onChange={handleChange} required />
                 </div>
                 <div style={{ flex: 1 }}>
                   <label>Ocupación</label>
