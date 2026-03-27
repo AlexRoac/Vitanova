@@ -13,7 +13,8 @@ function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoCh
           <GoogleLogin
             onSuccess={onGoogleSuccess}
             onError={onGoogleError}
-            width="100%" // Intenta ocupar el ancho disponible para que se vea bien
+            width="100%"
+            shape="circle"
           />
         </div>
 

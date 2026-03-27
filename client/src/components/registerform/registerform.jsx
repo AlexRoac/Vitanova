@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import '../loginform/loginform.css'; 
 import { Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 
-function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handleSubmit }) {
+function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handleSubmit, onGoogleSuccess, onGoogleError  }) {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -27,10 +28,15 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
         {step === 1 && (
           <>
             <h1>Crear cuenta</h1>
-            <button type="button" className="login-google">
-              <span className="google-icon" aria-hidden="true">G </span>
-              Registrarse con Google
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '15px' }}>
+              <GoogleLogin
+                onSuccess={onGoogleSuccess}
+                onError={onGoogleError}
+                width="100%"
+                text="signup_with"
+                shape="circle"
+              />
+            </div>
 
             <div className="divider">
               <span></span><small>o</small><span></span>

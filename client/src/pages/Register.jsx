@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // <-- IMPORTANTE: Lo agregamos para poder redireccionar
 import RegisterForm from "../components/registerform/registerform";
 
 function Register() {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate(); // <-- Inicializamos navigate
 
   const [formData, setFormData] = useState({
     email: "",
@@ -26,6 +28,9 @@ function Register() {
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
+  // ==========================================
+  // 1. REGISTRO MANUAL (El que ya tenías)
+  // ==========================================
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -53,6 +58,44 @@ function Register() {
       alert("Error conectando al servidor");
     }
   };
+  
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return alert(data.msg || "Error al registrarse con Google");
+      }
+
+      // Guardamos la sesión en el navegador
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("usuario", JSON.stringify(data.user));
+
+      // Magia: Como el usuario se registró con Google, no tiene teléfono ni ocupación.
+      // Así que lo mandamos a la pantalla de completar perfil.
+      if (data.user.perfil_completo === false) {
+        navigate("/completar-perfil");
+      } else {
+        navigate("/dashboard");
+      }
+
+    } catch (error) {
+      console.error("Error conectando al servidor:", error);
+      alert("Error al conectar con el servidor de Google");
+    }
+  };
+
+  const handleGoogleError = () => {
+    alert("Hubo un error al intentar registrarse con Google.");
+  };
 
   return (
     <RegisterForm
@@ -62,6 +105,9 @@ function Register() {
       nextStep={nextStep}
       prevStep={prevStep}
       handleSubmit={handleRegister}
+      // Le pasamos las nuevas funciones al componente visual
+      onGoogleSuccess={handleGoogleSuccess}
+      onGoogleError={handleGoogleError}
     />
   );
 }
