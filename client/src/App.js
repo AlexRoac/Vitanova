@@ -6,6 +6,7 @@ import Inicio from './pages/Inicio';
 import Dashboard from './pages/Dashboard';
 import Gestion from './pages/Gestion';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Error404 from './components/Error404/error404';
 
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/inicio" element={<Inicio />} />
+        <Route path="*" element={<Error404 />} />
 
         <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
           <Route path="/dashboard" element={<Dashboard />} />
