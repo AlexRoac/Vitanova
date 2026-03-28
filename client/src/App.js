@@ -10,6 +10,7 @@ import Gestion from './pages/Gestion';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Error404 from './components/Error404/error404';
 import CompletarPerfil from './pages/CompletarPerfil';
+import PacientesGestion from './pages/Pacientes';
 
 import './App.css';
 
@@ -30,6 +31,10 @@ function App() {
 
           <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
             <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+          
+          <Route element={<ProtectedRoute allowedRoles={['psicologo']} />}>
+            <Route path="/pacientes" element={<PacientesGestion />} />
           </Route>
           
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

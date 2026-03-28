@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+.nav {
+    background-color: #528090;
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0 1em;
+}
+
+.nav-link:hover {
+    background-color: #93b1b9;
+}
+
+.nav a{
+    display: block;
+    transition: background-color 0.2s ease-in-out;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 15px 10px;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-family: sans-serif;
+    flex: 1;
+}
+.nav a:hover {
+    color: #FFFFFF;
+}
