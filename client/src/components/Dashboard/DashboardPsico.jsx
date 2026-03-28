@@ -19,11 +19,20 @@ function DashboardPsico() {
             
             <div className="row m-4">
                 <div className="col-lg-6 col-md-12 col-sm-12 colcard">
-                    <a href="/pagina-que-no-existe">
+                    <a href="/pacientes">
                         <div className="card p-2 align-items-center">
                             <h1>📖</h1>
                             <h1>Mis Pacientes</h1>
                             <p className="card-text">ver mis Pacientes </p>
+                        </div>
+                    </a>
+                </div>
+                <div className="col-lg-6 col-md-12 col-sm-12 colcard">
+                    <a href="/pagina-que-no-existe">
+                        <div className="card  p-2 align-items-center">
+                            <h1>📅</h1>
+                            <h1>Mi Historial</h1>
+                            <p className="card-text">ver mi Historial </p>
                         </div>
                     </a>
                 </div>

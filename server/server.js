@@ -12,6 +12,8 @@ app.use("/api/auth", authRoutes);
 const usuariosRoutes = require("./routes/usuarios"); 
 app.use("/api", usuariosRoutes); 
 
+const notasRoutes = require('./routes/notas');
+app.use('/api/notas', notasRoutes);
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "Backend funcionando" });
