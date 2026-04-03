@@ -10,6 +10,8 @@ function Login() {
   // Inicializamos el hook de navegación
   const navigate = useNavigate(); 
 
+  const API_URL = process.env.REACT_APP_API_URL || "";
+
   //Manda el que ingreses del footer al login, no le muevan
   useEffect(()=>{
     const savedEmail = localStorage.getItem("prefillEmail");
@@ -24,7 +26,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +58,7 @@ function Login() {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/google", {
+      const res = await fetch(`${API_URL}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),

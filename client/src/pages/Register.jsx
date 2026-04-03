@@ -5,6 +5,7 @@ import RegisterForm from "../components/registerform/registerform";
 function Register() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate(); // <-- Inicializamos navigate
+  const API_URL = process.env.REACT_APP_API_URL || "";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -35,7 +36,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +62,7 @@ function Register() {
   
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/google", {
+      const res = await fetch(`${API_URL}/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
