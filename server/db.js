@@ -1,23 +1,29 @@
-require("dotenv").config(); 
+require("dotenv").config();
 const { Pool } = require("pg");
 
+// Si existe DATABASE_URL (Railway), la usamos directamente. 
+// Si no, usamos el objeto con localhost (Tu PC).
+const pool = new Pool(
+  process.env.DATABASE_URL
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }, // REQUERIDO para Railway
+      }
+    : {
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        host: "localhost",
+        port: 5432,
+      }
+);
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD, 
-  database: process.env.DB_NAME,    
-  host: "localhost",                 
-  port: 5432,                         
-});
-
-// Verificación automática de la conexión
 pool.connect()
   .then(() => {
-    // Usamos la variable también en el console.log para confirmar a dónde nos conectamos
-    console.log(`✅ Conectado exitosamente a PostgreSQL (Base de datos: ${process.env.DB_NAME})`);
+    console.log(`✅ Conectado a PostgreSQL`);
   })
   .catch((err) => {
-    console.error("❌ Error al conectar a la base de datos PostgreSQL:", err.stack);
+    console.error("❌ Error de conexión:", err.stack);
   });
 
 module.exports = pool;

@@ -1,24 +1,31 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config(); // Asegúrate de que esté aquí también
 
 const app = express();
 
-app.use(cors());
+// Configura CORS para aceptar tu URL de Vercel en el futuro
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  credentials: true
+}));
+
 app.use(express.json());
 
+// Tus rutas se quedan igual
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
-
 const usuariosRoutes = require("./routes/usuarios"); 
 app.use("/api", usuariosRoutes); 
-
 const notasRoutes = require('./routes/notas');
 app.use('/api/notas', notasRoutes);
 
 app.get("/", (req, res) => {
-  res.json({ mensaje: "Backend funcionando" });
+  res.json({ mensaje: "Backend funcionando en la nube" });
 });
 
-app.listen(5000, () => {
-  console.log("Servidor en http://localhost:5000");
+// USAR process.env.PORT es obligatorio para Railway
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
