@@ -12,6 +12,8 @@ function CompletarPerfil() {
     estado_civil: ""
   });
 
+  const API_URL = process.env.REACT_APP_API_URL || "";
+
   const navigate = useNavigate();
 
   // Verificamos que el usuario realmente tenga un token (haya iniciado sesión)
@@ -33,7 +35,7 @@ function CompletarPerfil() {
       const usuario = JSON.parse(localStorage.getItem("usuario"));
 
       // Llamamos a la nueva ruta del backend 
-      const res = await fetch(`http://localhost:5000/api/auth/completar-perfil/${usuario.id}`, {
+      const res = await fetch(`${API_URL}/auth/completar-perfil/${usuario.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

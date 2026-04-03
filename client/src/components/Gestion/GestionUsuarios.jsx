@@ -6,7 +6,7 @@ function Gestion() {
   const [busqueda, setBusqueda] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
 
-  const API_URL = "http://localhost:5000/api"; 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api"; 
 
   // OBTENER USUARIOS DE LA BASE DE DATOS
   useEffect(() => {
