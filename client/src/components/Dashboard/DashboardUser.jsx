@@ -19,7 +19,7 @@ function DashboardUser() {
             
             <div className="row m-4">
                 <div className="col-lg-6 col-md-12 col-sm-12 colcard">
-                    <a href="/agendar-cita">
+                    <a href="/agendar">
                         <div className="card p-2 align-items-center">
                             <h1>📖</h1>
                             <h1>Agendar cita</h1>
@@ -28,7 +28,7 @@ function DashboardUser() {
                     </a>
                 </div>
                 <div className="col-lg-6 col-md-12 col-sm-12 colcard">
-                    <a href="/mis-citas">
+                    <a href="/citas">
                         <div className="card  p-2 align-items-center">
                             <h1>📅</h1>
                             <h1>Mis Citas</h1>

@@ -12,6 +12,8 @@ import Error404 from './components/Error404/error404';
 import CompletarPerfil from './pages/CompletarPerfil';
 import PacientesGestion from './pages/Pacientes';
 import DisponibilidadPage from './pages/Disponibilidad';
+import AgendarCita from './pages/AgendarCita';
+import MisCitas from './pages/MisCitas';
 
 import './App.css';
 
@@ -32,6 +34,8 @@ function App() {
 
           <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/agendar" element={<AgendarCita />} />
+            <Route path="/citas" element={<MisCitas />} />
           </Route>
           
           <Route element={<ProtectedRoute allowedRoles={['psicologo']} />}>
