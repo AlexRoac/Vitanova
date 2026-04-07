@@ -19,6 +19,8 @@ const usuariosRoutes = require("./routes/usuarios");
 app.use("/api", usuariosRoutes); 
 const notasRoutes = require('./routes/notas');
 app.use('/api/notas', notasRoutes);
+const disponibilidadRoutes = require('./routes/disponibilidad');
+app.use('/api/disponibilidad', disponibilidadRoutes);
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "Backend funcionando en la nube" });

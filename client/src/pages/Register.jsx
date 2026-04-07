@@ -30,7 +30,7 @@ function Register() {
   const prevStep = () => setStep(step - 1);
 
   // ==========================================
-  // 1. REGISTRO MANUAL (El que ya tenías)
+  // 1. REGISTRO MANUAL
   // ==========================================
   const handleRegister = async (e) => {
     e.preventDefault();
