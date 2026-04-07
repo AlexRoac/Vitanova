@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Error404 from './components/Error404/error404';
 import CompletarPerfil from './pages/CompletarPerfil';
 import PacientesGestion from './pages/Pacientes';
+import DisponibilidadPage from './pages/Disponibilidad';
 
 import './App.css';
 
@@ -35,6 +36,7 @@ function App() {
           
           <Route element={<ProtectedRoute allowedRoles={['psicologo']} />}>
             <Route path="/pacientes" element={<PacientesGestion />} />
+            <Route path="/horarios" element={<DisponibilidadPage />} />
           </Route>
           
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
