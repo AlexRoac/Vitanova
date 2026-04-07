@@ -21,6 +21,8 @@ const notasRoutes = require('./routes/notas');
 app.use('/api/notas', notasRoutes);
 const disponibilidadRoutes = require('./routes/disponibilidad');
 app.use('/api/disponibilidad', disponibilidadRoutes);
+const citasRoutes = require('./routes/citas');
+app.use('/api/citas', citasRoutes);
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "Backend funcionando en la nube" });
