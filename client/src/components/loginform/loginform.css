@@ -66,11 +66,7 @@ h1{
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
-.submit-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  background: rgb(49, 161, 195);
-}
+
 
 .divider {
   display: flex;
@@ -143,8 +139,13 @@ h1{
 
 .submit-btn {
   background: #37b0d5;
-  color: #fff;
+  color: #000000;
   margin-top: 0.6rem;
+}
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  background: rgb(49, 161, 195);
 }
 
 .register {

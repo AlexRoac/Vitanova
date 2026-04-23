@@ -77,7 +77,6 @@ function Login() {
         alert(`¡Hola ${data.user.nombre}! Por favor completa tus datos para continuar.`);
         navigate("/completar-perfil");
       } else {
-        alert("Bienvenido " + data.user.nombre);
         navigate("/dashboard");
       }
 

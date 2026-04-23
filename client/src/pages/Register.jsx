@@ -57,6 +57,7 @@ function Register() {
     } catch (error) {
       console.error(error);
       alert("Error conectando al servidor");
+      console.log(API_URL)
     }
   };
   
