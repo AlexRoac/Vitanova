@@ -1,35 +1,57 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config(); // Asegúrate de que esté aquí también
+require("dotenv").config();
 
 const app = express();
 
-// Configura CORS para aceptar tu URL de Vercel en el futuro
+// 1. Configuración de CORS robusta
+const allowedOrigins = [
+  process.env.FRONTEND_URL, 
+  'https://vitanova.vercel.app',
+  'http://localhost:3000'
+].filter(Boolean); // Esto elimina valores undefined si la env no existe
+
 app.use(cors({
-  origin: [process.env.FRONTEND_URL || "http://localhost:3000", 'https://vitanova.vercel.app'],
-  credentials: true
+  origin: function (origin, callback) {
+    // permitir peticiones sin origen (como Postman o apps móviles)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS bloqueado por el servidor'), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// 2. Cabeceras de seguridad para Google Auth (¡Importante!)
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  next();
+});
 
 app.use(express.json());
 
-// Tus rutas se quedan igual
-const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
-const usuariosRoutes = require("./routes/usuarios"); 
-app.use("/api", usuariosRoutes); 
-const notasRoutes = require('./routes/notas');
-app.use('/api/notas', notasRoutes);
-const disponibilidadRoutes = require('./routes/disponibilidad');
-app.use('/api/disponibilidad', disponibilidadRoutes);
-const citasRoutes = require('./routes/citas');
-app.use('/api/citas', citasRoutes);
+// 3. Rutas
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api", require("./routes/usuarios")); 
+app.use('/api/notas', require('./routes/notas'));
+app.use('/api/disponibilidad', require('./routes/disponibilidad'));
+app.use('/api/citas', require('./routes/citas'));
 
 app.get("/", (req, res) => {
-  res.json({ mensaje: "Backend funcionando en la nube" });
+  res.json({ mensaje: "Backend funcionando en la nube", status: "OK" });
 });
 
-// USAR process.env.PORT es obligatorio para Railway
+// 4. Manejo de errores global (Para que no crashee el contenedor)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Algo salió mal en el servidor' });
+});
+
+// 5. Puerto dinámico para Railway
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => { // '0.0.0.0' ayuda a Railway a exponer el puerto
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
