@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // <-- IMPORTANTE: Lo agregamos para poder redireccionar
 import RegisterForm from "../components/registerform/registerform";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function Register() {
   const [step, setStep] = useState(1);
@@ -51,13 +53,11 @@ function Register() {
         return;
       }
 
-      alert("Registro exitoso. ¡Bienvenido, " + data.user.nombre + "!");
       window.location.href = '/login';
       
     } catch (error) {
       console.error(error);
       alert("Error conectando al servidor");
-      console.log(API_URL)
     }
   };
   
@@ -74,7 +74,11 @@ function Register() {
       const data = await res.json();
 
       if (!res.ok) {
-        return alert(data.msg || "Error al registrarse con Google");
+        return Swal.fire({
+          title: "Error",
+          text: "Hubo un error al intentar registrarse con Google. Por favor, intenta de nuevo.",
+          icon: "error"
+        });
       }
 
       // Guardamos la sesión en el navegador
@@ -90,13 +94,20 @@ function Register() {
       }
 
     } catch (error) {
-      console.error("Error conectando al servidor:", error);
-      alert("Error al conectar con el servidor de Google");
+      Swal.fire({
+          title: "Error",
+          text: "Error conectando al servidor: ",
+          icon: "error"
+        });
     }
   };
 
   const handleGoogleError = () => {
-    alert("Hubo un error al intentar registrarse con Google.");
+    Swal.fire({
+      title: "Error",
+      text: "Hubo un error al intentar registrarse con Google. Por favor, intenta de nuevo.",
+      icon: "error"
+    });
   };
 
   return (

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import LoginForm from "../components/loginform/loginform";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function Login() {
   const [correo, setCorreo] = useState("");
@@ -37,7 +39,11 @@ function Login() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.msg);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: data.msg || "Error al iniciar sesión",
+        });
         return;
       }
 
@@ -46,8 +52,6 @@ function Login() {
       localStorage.setItem("token", data.token);
       // Guardamos los datos básicos del usuario
       localStorage.setItem("usuario", JSON.stringify(data.user));
-
-      alert("Bienvenido " + data.user.nombre);
       navigate("/dashboard");
       
     } catch (error) {

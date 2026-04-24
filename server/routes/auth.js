@@ -25,7 +25,7 @@ router.post("/login", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(400).json({ msg: "Usuario no existe o la cuenta está inactiva" });
+      return res.status(400).json({ msg: "Contraseña o usuario incorrectos" });
     }
 
     const user = result.rows[0];
@@ -37,7 +37,7 @@ router.post("/login", async (req, res) => {
     );
 
     if (!validPassword) {
-      return res.status(400).json({ msg: "Contraseña incorrecta" });
+      return res.status(400).json({ msg: "Contraseña o usuario incorrectos" });
     }
 
     // --- GENERAR EL TOKEN JWT ---

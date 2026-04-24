@@ -14,6 +14,8 @@
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.2",
     "react-scripts": "5.0.1",
+    "sweetalert2": "^11.26.24",
+    "sweetalert2-react-content": "^5.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
