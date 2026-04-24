@@ -1,24 +1,19 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import LoginForm from "../components/loginform/loginform";
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 
 function Login() {
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   
-  // Inicializamos el hook de navegación
   const navigate = useNavigate(); 
-
   const API_URL = process.env.REACT_APP_API_URL || "";
 
-  //Manda el que ingreses del footer al login, no le muevan
-  useEffect(()=>{
+  useEffect(() => {
     const savedEmail = localStorage.getItem("prefillEmail");
-
-    if (savedEmail){
+    if (savedEmail) {
       setCorreo(savedEmail);
       localStorage.removeItem("prefillEmail");
     }
@@ -39,24 +34,38 @@ function Login() {
       const data = await res.json();
 
       if (!res.ok) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: data.msg || "Error al iniciar sesión",
+        Swal.fire({
+          icon: "error",
+          title: "Error de acceso",
+          text: data.msg || "Credenciales incorrectas, intenta de nuevo.",
+          confirmButtonColor: "#37b0d5",
         });
         return;
       }
 
-      //TOKEN Y REDIRECCIÓN 
-      // Guardamos el token en el almacenamiento local del navegador
+      // Guardar sesión
       localStorage.setItem("token", data.token);
-      // Guardamos los datos básicos del usuario
       localStorage.setItem("usuario", JSON.stringify(data.user));
-      navigate("/dashboard");
+
+      // ALERTA DE ÉXITO CON ESPERA
+      Swal.fire({
+        icon: "success",
+        title: "¡Bienvenido!",
+        text: "Has iniciado sesión correctamente.",
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        navigate("/dashboard");
+      });
       
     } catch (error) {
       console.error(error);
-      alert("Error conectando al servidor");
+      Swal.fire({
+        icon: "error",
+        title: "Error de red",
+        text: "No se pudo conectar con el servidor. Verifica tu conexión.",
+        confirmButtonColor: "#37b0d5",
+      });
     }
   };
 
@@ -69,24 +78,42 @@ function Login() {
       });
 
       const data = await res.json();
-      if (!res.ok) return alert(data.error || "Error al iniciar sesión con Google");
+
+      if (!res.ok) {
+        return Swal.fire({
+          icon: "error",
+          title: "Error con Google",
+          text: data.error || "No pudimos validar tu cuenta de Google.",
+        });
+      }
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("usuario", JSON.stringify(data.user));
 
-      // ==================================================
-      // NUEVA LÓGICA: ¿Perfil completo o incompleto?
-      // ==================================================
       if (data.user.perfil_completo === false) {
-        alert(`¡Hola ${data.user.nombre}! Por favor completa tus datos para continuar.`);
-        navigate("/completar-perfil");
+        Swal.fire({
+          icon: "info",
+          title: `¡Hola ${data.user.nombre}!`,
+          text: "Por favor completa tus datos para continuar.",
+          confirmButtonText: "Ir a mi perfil",
+          confirmButtonColor: "#37b0d5",
+        }).then(() => {
+          navigate("/completar-perfil");
+        });
       } else {
-        navigate("/dashboard");
+        Swal.fire({
+          icon: "success",
+          title: "Acceso correcto",
+          timer: 1000,
+          showConfirmButton: false,
+        }).then(() => {
+          navigate("/dashboard");
+        });
       }
 
     } catch (error) {
       console.error(error);
-      alert("Error conectando al servidor");
+      Swal.fire("Error", "Ocurrió un fallo en la conexión.", "error");
     }
   };
 
@@ -100,7 +127,7 @@ function Login() {
       onPasswordChange={(e) => setPassword(e.target.value)}
       onSubmit={handleLogin}
       onGoogleSuccess={handleGoogleSuccess}
-      onGoogleError={() => alert("Falló la conexión con Google")}
+      onGoogleError={() => Swal.fire("Error", "Falló la conexión con Google", "error")}
     />
   );
 }
