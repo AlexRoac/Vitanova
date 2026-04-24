@@ -14,15 +14,16 @@ import PacientesGestion from './pages/Pacientes';
 import DisponibilidadPage from './pages/Disponibilidad';
 import AgendarCita from './pages/AgendarCita';
 import MisCitas from './pages/MisCitas';
+import Historial from './pages/Historial';
 
 import './App.css';
 
 function App() {
   // Leemos la variable de entorno
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
   return (
-    <GoogleOAuthProvider clientId="771373802222-18a7j9qeav7miehmflrul7n91mc8ac2m.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={clientId}>
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to="/inicio" />} />
@@ -41,6 +42,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['psicologo']} />}>
             <Route path="/pacientes" element={<PacientesGestion />} />
             <Route path="/horarios" element={<DisponibilidadPage />} />
+            <Route path="/historial" element={<Historial />} />
           </Route>
           
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

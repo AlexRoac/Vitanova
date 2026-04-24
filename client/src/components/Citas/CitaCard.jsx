@@ -1,24 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CitaCard = ({ cita, onCancelar }) => {
-    // Formateo de fecha según normas locales
+
     const fechaFormateada = new Date(cita.fecha).toLocaleDateString('es-MX', {
         weekday: 'long', day: 'numeric', month: 'long'
     });
+    
+    const [usuario, setUsuario] = useState(null);
+    
+    useEffect(() => {
+        const usuarioGuardado = localStorage.getItem("usuario");
+        if (usuarioGuardado) {
+          setUsuario(JSON.parse(usuarioGuardado));
+        }
+    }, []);
+    
+    // Si el usuario aún no carga del localStorage, no renderizamos nada 
+    if (!usuario) {
+        return null; 
+    }
 
-    // Lógica para los colores de la etiqueta (badge) según el estado
+    // Logica para los colores de la etiqueta segun el estado de la cita
     let badgeBgColor = '#fff3cd';
     let badgeTextColor = '#856404';
-    let borderColor = '#f1c40f'; // Amarillo por defecto
+    let borderColor = '#f1c40f'; 
 
     if (cita.estado === 'confirmada') {
         badgeBgColor = '#d4edda';
         badgeTextColor = '#155724';
-        borderColor = '#2ecc71'; // Verde
+        borderColor = '#2ecc71'; 
     } else if (cita.estado === 'cancelada') {
         badgeBgColor = '#f8d7da';
         badgeTextColor = '#721c24';
-        borderColor = '#e74c3c'; // Rojo
+        borderColor = '#e74c3c'; 
     }
 
     const badgeStyle = {
@@ -43,10 +57,21 @@ const CitaCard = ({ cita, onCancelar }) => {
             boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
             borderLeft: `6px solid ${borderColor}`
         }}>
+            
+            {/* Vistas para psciologo y paciente tilin */}
             <div>
-                <h3 style={{ margin: '0 0 5px 0', fontSize: '1.1rem' }}>Psic. {cita.nombre_psicologo} {cita.apellido_psicologo}</h3>
+                {usuario.rol === 'psicologo' ? (
+                    <h3 style={{ margin: '0 0 5px 0', fontSize: '1.1rem' }}>
+                        Paciente: {cita.nombre_paciente} {cita.apellido_paciente}
+                    </h3>
+                ) : (
+                    <h3 style={{ margin: '0 0 5px 0', fontSize: '1.1rem' }}>
+                        Psic. {cita.nombre_psicologo} {cita.apellido_psicologo}
+                    </h3>
+                )}
+                
                 <p style={{ margin: 0, color: '#666', textTransform: 'capitalize' }}>🗓️ {fechaFormateada}</p>
-                <p style={{ margin: '5px 0 0 0', fontWeight: 'bold', color: '#333' }}>⏰ {cita.hora.slice(0, 5)} hrs</p>
+                <p style={{ margin: '5px 0 0 0', fontWeight: 'bold', color: '#333' }}>⏰ {cita.hora?.slice(0, 5)} hrs</p>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>

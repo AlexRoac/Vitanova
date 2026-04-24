@@ -28,7 +28,7 @@ function DashboardPsico() {
                     </a>
                 </div>
                 <div className="col-lg-6 col-md-12 col-sm-12 colcard">
-                    <a href="/pagina-que-no-existe">
+                    <a href="/historial">
                         <div className="card  p-2 align-items-center">
                             <h1>📅</h1>
                             <h1>Mi Historial</h1>

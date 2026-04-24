@@ -30,6 +30,30 @@ router.get('/paciente/:id', async (req, res) => {
     }
 });
 
+router.get('/psicologo/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(
+            `SELECT 
+                c.id, 
+                c.fecha, 
+                c.hora, 
+                c.estado, 
+                u.nombre AS nombre_paciente, 
+                u.apellido AS apellido_paciente
+            FROM citas c
+            JOIN usuarios u ON c.paciente_id = u.id_usuario
+            WHERE c.psicologo_id = $1
+            ORDER BY c.fecha DESC, c.hora DESC`,
+            [id]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error SQL detallado:", error.message);
+        res.status(500).json({ error: "Error al obtener el historial de citas" });
+    }
+});
+
 // ==========================================
 // 2. OBTENER HORARIOS DISPONIBLES (AHORA ESTÁ ABAJO)
 // ==========================================

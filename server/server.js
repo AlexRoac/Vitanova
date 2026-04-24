@@ -6,7 +6,7 @@ const app = express();
 
 // Configura CORS para aceptar tu URL de Vercel en el futuro
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  origin: [process.env.FRONTEND_URL || "http://localhost:3000", 'https://vitanova.vercel.app'],
   credentials: true
 }));
 

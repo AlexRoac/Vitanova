@@ -7,7 +7,7 @@ function PacienteGestion() {
   
   // Estados para manejar los modales
   const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
-  const [vistaModal, setVistaModal] = useState("detalle"); // Puede ser: "detalle", "nueva-nota", "notas-pasadas"
+  const [vistaModal, setVistaModal] = useState("detalle"); 
   
   // Estado para el formulario de la nota
   const [contenidoNota, setContenidoNota] = useState("");
@@ -15,6 +15,9 @@ function PacienteGestion() {
 
   const [notasPasadas, setNotasPasadas] = useState([]);
   const [cargandoNotas, setCargandoNotas] = useState(false);
+
+  // NUEVO ESTADO: Para guardar las fechas calculadas
+  const [fechasCitas, setFechasCitas] = useState({ ultima: "Calculando...", proxima: "Calculando..." });
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api"; 
 
@@ -49,28 +52,84 @@ function PacienteGestion() {
     setBusqueda(e.target.value);
   };
 
+  // --- NUEVA FUNCIÓN: CALCULAR ÚLTIMA Y PRÓXIMA CITA ---
+  const calcularFechasCitas = async (idPaciente) => {
+    try {
+      const token = localStorage.getItem("token");
+      // Llamamos al endpoint de historial que ya tenías
+      const respuesta = await fetch(`${API_URL}/citas/paciente/${idPaciente}`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+      });
+
+      if (respuesta.ok) {
+        const citas = await respuesta.json();
+        const ahora = new Date();
+        
+        let ultima = null;
+        let proxima = null;
+
+        // Filtramos las canceladas
+        const citasValidas = citas.filter(c => c.estado !== 'cancelada');
+
+        citasValidas.forEach(cita => {
+          // Unimos fecha y hora para poder compararla con la hora actual
+          const fechaSolo = cita.fecha.split('T')[0]; 
+          const fechaCita = new Date(`${fechaSolo}T${cita.hora}`);
+
+          if (fechaCita < ahora) {
+            // Si la cita ya pasó, buscamos la más reciente hacia atrás
+            if (!ultima || fechaCita > ultima.objFecha) {
+              ultima = { ...cita, objFecha: fechaCita };
+            }
+          } else if (fechaCita >= ahora && cita.estado === 'confirmada') {
+            // Si la cita es en el futuro, buscamos la más cercana hacia adelante
+            if (!proxima || fechaCita < proxima.objFecha) {
+              proxima = { ...cita, objFecha: fechaCita };
+            }
+          }
+        });
+
+        // Actualizamos el estado con las fechas formateadas
+        setFechasCitas({
+          ultima: ultima ? ultima.objFecha.toLocaleDateString('es-MX') : "Sin citas previas",
+          proxima: proxima ? `${proxima.objFecha.toLocaleDateString('es-MX')} a las ${proxima.hora.slice(0,5)} hrs` : "Sin agendar"
+        });
+
+      } else {
+        setFechasCitas({ ultima: "Error al cargar", proxima: "Error al cargar" });
+      }
+    } catch (error) {
+      console.error("Error al calcular fechas:", error);
+      setFechasCitas({ ultima: "Error", proxima: "Error" });
+    }
+  };
+
+  // --- MODIFICADO: ABRIR MODAL AHORA CALCULA LAS FECHAS ---
   const abrirModalPaciente = (paciente) => {
+    const idReal = paciente.id_usuario || paciente.id;
     setPacienteSeleccionado(paciente);
-    setVistaModal("detalle"); // Siempre que abrimos, empezamos en el detalle
-    setContenidoNota(""); // Limpiamos el campo por si había algo escrito antes
+    setVistaModal("detalle"); 
+    setContenidoNota(""); 
+    setFechasCitas({ ultima: "Calculando...", proxima: "Calculando..." }); // Reiniciamos el texto
+    
+    // Disparamos el cálculo de las fechas
+    calcularFechasCitas(idReal);
   };
 
   const cerrarModal = () => {
     setPacienteSeleccionado(null);
   };
 
-  // --- FUNCIÓN PARA GUARDAR LA NOTA ---
+  // ... (Tus funciones guardarNuevaNota y cargarNotasPasadas se quedan igual) ...
   const guardarNuevaNota = async () => {
     if (!contenidoNota.trim()) {
       alert("La nota no puede estar vacía.");
       return;
     }
-
     setGuardando(true);
-
     try {
       const token = localStorage.getItem("token");
-      
       const respuesta = await fetch(`${API_URL}/notas`, {
         method: 'POST',
         headers: {
@@ -78,16 +137,15 @@ function PacienteGestion() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          // Mandamos el id_usuario basándonos en tu base de datos
-          paciente_id: pacienteSeleccionado.id, 
+          paciente_id: pacienteSeleccionado.id_usuario || pacienteSeleccionado.id, 
           contenido: contenidoNota
         })
       });
 
       if (respuesta.ok) {
         alert("¡Nota guardada exitosamente!");
-        setContenidoNota(""); // Limpiamos el área de texto
-        setVistaModal("detalle"); // Regresamos a la vista principal del paciente
+        setContenidoNota(""); 
+        setVistaModal("detalle"); 
       } else {
         alert("Hubo un error al guardar la nota.");
       }
@@ -99,7 +157,6 @@ function PacienteGestion() {
     }
   };
 
-  // --- FUNCIÓN PARA CARGAR NOTAS PASADAS ---
   const cargarNotasPasadas = async (idPaciente) => {
     setCargandoNotas(true);
     try {
@@ -124,11 +181,11 @@ function PacienteGestion() {
       setCargandoNotas(false);
     }
   };
+
   const usuariosFiltrados = usuarios.filter(user => {
-    const esPaciente = String(user.rol) === "1" || String(user.id_rol) === "1"; // Ajustado por si usas id_rol
+    const esPaciente = String(user.rol) === "1" || String(user.id_rol) === "1"; 
     const coincideBusqueda = user.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
                              user.email?.toLowerCase().includes(busqueda.toLowerCase());
-    
     return esPaciente && coincideBusqueda; 
   });
 
@@ -182,7 +239,6 @@ function PacienteGestion() {
         <div className="modal-overlay-detalle">
           <div className="modal-content-detalle">
             
-            {/* VISTA 1: DETALLE DEL PACIENTE (La que hicimos antes) */}
             {vistaModal === "detalle" && (
               <>
                 <div className="detalle-avatar">
@@ -203,13 +259,15 @@ function PacienteGestion() {
                     <div className="detalle-datos-extra">
                         <p><span>Fecha de nacimiento</span><br/>{pacienteSeleccionado.fecha_nacimiento ? new Date(pacienteSeleccionado.fecha_nacimiento).toLocaleDateString() : "xx/xx/xxxx"}</p>
                         <p><span>Género</span><br/>{pacienteSeleccionado.genero || "No especificado"}</p>
-                        <p><span>Última cita</span><br/>{pacienteSeleccionado.ultima_cita || "xx/xx/xxxx"}</p>
-                        <p><span>Próxima cita</span><br/>{pacienteSeleccionado.proxima_cita || "Sin definir"}</p>
+                        
+                        {/* AQUI SE IMPRIMEN LAS FECHAS CALCULADAS DINÁMICAMENTE */}
+                        <p><span>Última cita</span><br/>{fechasCitas.ultima}</p>
+                        <p><span>Próxima cita</span><br/>{fechasCitas.proxima}</p>
                     </div>
                 </div>
 
                 <div className="detalle-botones">
-                    <button className="btn-nota-pasada" onClick={() => { setVistaModal("notas-pasadas"); cargarNotasPasadas(pacienteSeleccionado.id); }}>Notas Pasadas</button>
+                    <button className="btn-nota-pasada" onClick={() => { setVistaModal("notas-pasadas"); cargarNotasPasadas(pacienteSeleccionado.id_usuario || pacienteSeleccionado.id); }}>Notas Pasadas</button>
                     <button className="btn-nueva-nota" onClick={() => setVistaModal("nueva-nota")}>Nueva Nota</button>
                 </div>
 
