@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Pacientes.css'; 
 
 function PacienteGestion() {
@@ -20,6 +20,25 @@ function PacienteGestion() {
   const [fechasCitas, setFechasCitas] = useState({ ultima: "Calculando...", proxima: "Calculando..." });
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api"; 
+
+  //Bloquear el scroll del modal
+  useEffect(() => {
+  document.body.style.overflow = "hidden";
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+  }, []);
+
+  //Salir con ESC
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") cerrarModal();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+    }, []);
 
   useEffect(() => {
     const cargarUsuarios = async () => {
@@ -236,9 +255,9 @@ function PacienteGestion() {
 
       {/* --- MODAL PRINCIPAL --- */}
       {pacienteSeleccionado && (
-        <div className="modal-overlay-detalle">
-          <div className="modal-content-detalle">
-            
+        <div className="modal-overlay-detalle" onClick={cerrarModal}>
+          <div className="modal-content-detalle" onClick={(e)=>e.stopPropagation()}>
+            <button onClick={cerrarModal} className="btn-regresar">X</button>
             {vistaModal === "detalle" && (
               <>
                 <div className="detalle-avatar">
@@ -270,8 +289,6 @@ function PacienteGestion() {
                     <button className="btn-nota-pasada" onClick={() => { setVistaModal("notas-pasadas"); cargarNotasPasadas(pacienteSeleccionado.id_usuario || pacienteSeleccionado.id); }}>Notas Pasadas</button>
                     <button className="btn-nueva-nota" onClick={() => setVistaModal("nueva-nota")}>Nueva Nota</button>
                 </div>
-
-                <button onClick={cerrarModal} className="btn-regresar">Cerrar</button>
               </>
             )}
 
