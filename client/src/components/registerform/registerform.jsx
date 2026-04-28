@@ -3,6 +3,7 @@ import '../loginform/loginform.css';
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { default as logoV4 } from "../../assets/Logo_Vita4.png";
+import Swal from 'sweetalert2';
 
 function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handleSubmit, onGoogleSuccess, onGoogleError  }) {
 
@@ -16,7 +17,12 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
   const handleNext = (e) => {
     e.preventDefault();
     if (formData.password !== confirmPassword) {
-      alert("Las contraseñas no coinciden");
+      Swal.fire({
+        icon: "error",
+        title: "Error de acceso",
+        text: "Contraseña no coincide",
+        confirmButtonColor: "#37b0d5",
+                    });
       return;
     }
     nextStep();

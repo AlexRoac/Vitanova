@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 // Ajusta esta ruta dependiendo de dónde guardaste el componente:
 import CompletarPerfilForm from "../components/CompletarPerfilForm/CompletarPerfilForm";
+import Swal from 'sweetalert2';
 
 function CompletarPerfil() {
   const [formData, setFormData] = useState({
@@ -47,14 +48,24 @@ function CompletarPerfil() {
       const data = await res.json();
 
       if (!res.ok) {
-        return alert(data.msg || "Error al actualizar los datos");
+        return Swal.fire({
+          icon: "error",
+          title: "Error de acceso",
+          text: data.msg || "Error al actualizar los datos",
+          confirmButtonColor: "#37b0d5",
+              });
       }
 
       // Actualizamos el usuario en el localStorage para quitar la bandera
       usuario.perfil_completo = true;
       localStorage.setItem("usuario", JSON.stringify(usuario));
-
-      alert("¡Perfil completado con éxito!");
+      
+      Swal.fire({
+          icon: "error",
+          title: "Error de acceso",
+          text: "¡Perfil completado con éxito!",
+          confirmButtonColor: "#37b0d5",
+              });
       navigate("/dashboard");
 
     } catch (error) {
