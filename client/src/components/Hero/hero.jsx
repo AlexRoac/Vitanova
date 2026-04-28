@@ -45,7 +45,7 @@ function Hero() {
             </p>
             <div className="hero-buttons">
                 {usuario ? (
-                    <a href="#" className="btn-primary">Agendar cita</a>
+                    <a href="/agendar" className="btn-primary">Agendar cita</a>
                 ) : (
                     <a href="/login" className="btn-primary">Agendar cita</a>
                 )}
