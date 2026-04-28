@@ -4,8 +4,6 @@ import Swal from 'sweetalert2'; // Importamos SweetAlert2
 
 // Ajusta esta ruta dependiendo de dónde guardaste el componente:
 import CompletarPerfilForm from "../components/CompletarPerfilForm/CompletarPerfilForm";
-import Swal from 'sweetalert2';
-
 function CompletarPerfil() {
   const [formData, setFormData] = useState({
     telefono: "",
