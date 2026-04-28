@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import './Gestion.css';
 
 function Gestion() {
   const [usuarios, setUsuarios] = useState([]);
   const [busqueda, setBusqueda] = useState("");
-  const [mostrarModal, setMostrarModal] = useState(false);
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api"; 
 
@@ -12,19 +12,19 @@ function Gestion() {
   useEffect(() => {
     const cargarUsuarios = async () => {
       try {
-        const token = localStorage.getItem("token"); // Sacamos el token de la memoria
+        const token = localStorage.getItem("token");
         
         const respuesta = await fetch(`${API_URL}/usuarios`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`, // Le mostramos la credencial al servidor
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
 
         if (respuesta.ok) {
           const datos = await respuesta.json();
-          setUsuarios(datos); // Guardamos los usuarios reales en el estado
+          setUsuarios(datos);
         } else {
           console.error("Error al obtener los usuarios");
         }
@@ -34,13 +34,31 @@ function Gestion() {
     };
 
     cargarUsuarios();
-  }, []); // [] significa que esto se ejecuta solo una vez al abrir la pagina
+  }, []);
 
   const handleBusqueda = (e) => {
     setBusqueda(e.target.value);
   };
 
+  // CAMBIAR ROL EN EL ESTADO (CON VALIDACIÓN DE ADMIN)
   const cambiarRol = (idUsuario, nuevoRol) => {
+    const usuarioAEditar = usuarios.find(u => u.id === idUsuario);
+
+    // Validar que no se le quite el rol al último administrador (Asumiendo que el valor '3' es Admin)
+    if (String(usuarioAEditar.rol) === "3" && String(nuevoRol) !== "3") {
+      const cantidadAdmins = usuarios.filter(u => String(u.rol) === "3").length;
+      
+      if (cantidadAdmins <= 1) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Acción denegada',
+          text: 'No puedes quitarle el rol al último Administrador del sistema.',
+          confirmButtonColor: '#60A6BF'
+        });
+        return; // Cortamos la ejecución
+      }
+    }
+
     const nuevosUsuarios = usuarios.map(user => {
       if (user.id === idUsuario) {
         return { ...user, rol: nuevoRol };
@@ -50,15 +68,41 @@ function Gestion() {
     setUsuarios(nuevosUsuarios);
   };
 
-  // ELIMINAR UN USUARIO EN LA BASE DE DATOS (DELETE)
+  // ELIMINAR UN USUARIO EN LA BASE DE DATOS (CON VALIDACIÓN Y SWEETALERT)
   const eliminarUsuario = async (idUsuario) => {
-    const confirmar = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
+    const usuarioAEliminar = usuarios.find(u => u.id === idUsuario);
+
+    // Validar que no se elimine al último administrador
+    if (String(usuarioAEliminar.rol) === "3") {
+      const cantidadAdmins = usuarios.filter(u => String(u.rol) === "3").length;
+      
+      if (cantidadAdmins <= 1) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Acción denegada',
+          text: 'No puedes eliminar al último Administrador del sistema.',
+          confirmButtonColor: '#60A6BF'
+        });
+        return; // Cortamos la ejecución
+      }
+    }
+
+    // SweetAlert para confirmar eliminación
+    const confirmacion = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: "No podrás revertir esto. Se eliminará permanentemente al usuario.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#aab8c2',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
     
-    if (confirmar) {
+    if (confirmacion.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
         
-        // Le decimos al backend que ID queremos borrar
         const respuesta = await fetch(`${API_URL}/usuarios/${idUsuario}`, {
           method: 'DELETE',
           headers: {
@@ -67,25 +111,41 @@ function Gestion() {
         });
 
         if (respuesta.ok) {
-          // Si el servidor confirma que borra, elimina pantalla al user
           const listaActualizada = usuarios.filter(user => user.id !== idUsuario);
           setUsuarios(listaActualizada);
+          
+          Swal.fire({
+            icon: 'success',
+            title: '¡Eliminado!',
+            text: 'El usuario ha sido eliminado correctamente.',
+            timer: 2000,
+            showConfirmButton: false
+          });
         } else {
-          alert("Hubo un error al intentar eliminar el usuario.");
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Hubo un error al intentar eliminar el usuario.',
+            confirmButtonColor: '#60A6BF'
+          });
         }
       } catch (error) {
         console.error("Error al eliminar:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de red',
+          text: 'No se pudo conectar con el servidor.',
+          confirmButtonColor: '#60A6BF'
+        });
       }
     }
   };
-
 
   // GUARDAR CAMBIOS DE ROLES EN LA BD 
   const aplicarCambios = async () => {
     try {
       const token = localStorage.getItem("token");
       
-      // Enviamos TODO el arreglo de usuarios actualizados al backend
       const respuesta = await fetch(`${API_URL}/usuarios/actualizar-roles`, {
         method: 'PUT',
         headers: {
@@ -96,12 +156,28 @@ function Gestion() {
       });
 
       if (respuesta.ok) {
-        setMostrarModal(true);
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'Los cambios han sido aplicados correctamente.',
+          confirmButtonColor: '#60A6BF'
+        });
       } else {
-        alert("Error al guardar los cambios en la base de datos.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al guardar los cambios en la base de datos.',
+          confirmButtonColor: '#60A6BF'
+        });
       }
     } catch (error) {
       console.error("Error al aplicar cambios:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de red',
+        text: 'No se pudo establecer conexión con el servidor.',
+        confirmButtonColor: '#60A6BF'
+      });
     }
   };
 
@@ -109,75 +185,65 @@ function Gestion() {
     user.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
     user.email.toLowerCase().includes(busqueda.toLowerCase())
   );
-    return (
-        <div className="gestion-container">
-        
-        <div className="search-container">
-            <input 
-            type="text" 
-            placeholder="🔍 Buscar" 
-            value={busqueda}
-            onChange={handleBusqueda}
-            className="search-input"
-            />
-        </div>
 
-        <div className="row">
-            {usuariosFiltrados.map(user => (
-            <div className="col-lg-6 col-md-12" key={user.id}>
-                <div className="gestion-card">
+  return (
+    <div className="gestion-container">
+      
+      <div className="search-container">
+        <input 
+          type="text" 
+          placeholder="🔍 Buscar" 
+          value={busqueda}
+          onChange={handleBusqueda}
+          className="search-input"
+        />
+      </div>
+
+      <div className="row">
+        {usuariosFiltrados.map(user => (
+          <div className="col-lg-6 col-md-12" key={user.id}>
+            <div className="gestion-card">
+              
+              <button 
+                onClick={() => eliminarUsuario(user.id)}
+                className="delete-btn"
+                title="Eliminar usuario"
+              >
+                ✖
+              </button>
+
+              <div className="avatar-icon">👤</div>
+              
+              <div className="user-info">
+                <h6 className="user-name">{user.nombre}</h6>
+                <a href={`mailto:${user.email}`} className="user-email">
+                  {user.email}
+                </a>
                 
-                <button 
-                    onClick={() => eliminarUsuario(user.id)}
-                    className="delete-btn"
-                    title="Eliminar usuario"
+                <select 
+                  value={user.rol} 
+                  onChange={(e) => cambiarRol(user.id, e.target.value)}
+                  className="role-select"
                 >
-                    ✖
-                </button>
+                  <option value="1">Paciente</option>
+                  <option value="2">Psicologo</option>
+                  <option value="3">Admin</option>
+                </select>
+              </div>
 
-                <div className="avatar-icon">👤</div>
-                
-                <div className="user-info">
-                    <h6 className="user-name">{user.nombre}</h6>
-                    <a href={`mailto:${user.email}`} className="user-email">
-                    {user.email}
-                    </a>
-                    
-                    <select 
-                    value={user.rol} 
-                    onChange={(e) => cambiarRol(user.id, e.target.value)}
-                    className="role-select"
-                    >
-                    <option value="1">Paciente</option>
-                    <option value="2">Psicologo</option>
-                    <option value="3">Admin</option>
-                    </select>
-                </div>
-
-                </div>
             </div>
-            ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="btn-aplicar-container">
-            <button onClick={aplicarCambios} className="btn-aplicar">
-            Aplicar
-            </button>
-        </div>
+      <div className="btn-aplicar-container">
+        <button onClick={aplicarCambios} className="btn-aplicar">
+          Aplicar
+        </button>
+      </div>
 
-        {mostrarModal && (
-            <div className="modal-overlay">
-            <div className="modal-content">
-                <p className="modal-text">LOS CAMBIOS HAN SIDO APLICADOS</p>
-                <button onClick={() => setMostrarModal(false)} className="btn-ok">
-                Ok
-                </button>
-            </div>
-            </div>
-        )}
-
-        </div>
-    );
+    </div>
+  );
 }
 
 export default Gestion;

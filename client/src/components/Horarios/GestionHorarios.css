@@ -90,11 +90,11 @@
 /* Override react-calendar */
 .react-calendar {
   width: 100% !important;
-  border: 1.5px solid #e8eef4 !important;
+  border: none !important; /* Eliminamos el borde para un look más limpio */
   border-radius: 14px !important;
   font-family: 'Montserrat', 'Segoe UI', sans-serif !important;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(96, 166, 191, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important; /* Sombra más fuerte para que despegue del fondo */
 }
 
 .react-calendar__navigation {
@@ -105,15 +105,22 @@
 }
 
 .react-calendar__navigation button {
+  background: transparent !important; /* Quita el fondo gris */
   color: #ffffff !important;
   font-weight: 600 !important;
   font-size: 0.85rem !important;
   min-width: 36px !important;
 }
 
-.react-calendar__navigation button:hover,
-.react-calendar__navigation button:focus {
-  background: rgba(96, 166, 191, 0.2) !important;
+/* 🔥 Solución: Flechas deshabilitadas (meses pasados) ya no tendrán fondo gris */
+.react-calendar__navigation button:disabled {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.3) !important; /* Se ven semi-transparentes */
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background: rgba(255, 255, 255, 0.1) !important;
   border-radius: 8px !important;
 }
 
