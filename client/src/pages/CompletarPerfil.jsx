@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
+import Swal from 'sweetalert2'; // Importamos SweetAlert2
+
 // Ajusta esta ruta dependiendo de dónde guardaste el componente:
 import CompletarPerfilForm from "../components/CompletarPerfilForm/CompletarPerfilForm";
 
@@ -47,19 +49,40 @@ function CompletarPerfil() {
       const data = await res.json();
 
       if (!res.ok) {
-        return alert(data.msg || "Error al actualizar los datos");
+        // Alerta de error desde el backend
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.msg || "Error al actualizar los datos",
+          confirmButtonColor: '#60A6BF'
+        });
+        return; // Cortamos la ejecución
       }
 
       // Actualizamos el usuario en el localStorage para quitar la bandera
       usuario.perfil_completo = true;
       localStorage.setItem("usuario", JSON.stringify(usuario));
 
-      alert("¡Perfil completado con éxito!");
+      // Alerta de éxito con await para que se vea antes de navegar
+      await Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: '¡Perfil completado con éxito!',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      
       navigate("/dashboard");
 
     } catch (error) {
       console.error(error);
-      alert("Error conectando al servidor");
+      // Alerta de error de conexión
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de red',
+        text: 'Error conectando al servidor',
+        confirmButtonColor: '#60A6BF'
+      });
     }
   };
 
