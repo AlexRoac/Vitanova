@@ -144,6 +144,7 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
                 <p className="disp-subheader">
                     Especialista: <strong>{nombrePsicologo}</strong>
                 </p>
+                <div style={{margin:'10px'}}><span style={{background:'#4CAF50', width:'15px', height:'15px', display:'inline-block'}}></span> Disponibilidad</div>
                 <div className="disp-divider"></div>
             </div>
 
