@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import './GestionHorarios.css'
 
 const GestionarHorarios = () => {
     const [fecha, setFecha] = useState(new Date());
@@ -79,51 +80,47 @@ const GestionarHorarios = () => {
     }
 
     return (
-        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
-            <h2>Mi Disponibilidad</h2>
-            {/* Mostramos el nombre y apellido que vimos en tu captura */}
-            <p>Gestiona tus horas para el psicólogo: <strong>{user.nombre} {user.apellido}</strong></p>
+  <div className="disponibilidad-container">
+    <h2>Mi Disponibilidad</h2>
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-                <Calendar onChange={setFecha} value={fecha} minDate={new Date()} />
-            </div>
+    <p>
+      Gestiona tus horas para el psicólogo:{" "}
+      <strong>{user.nombre} {user.apellido}</strong>
+    </p>
 
-            <h3>Horarios para el {fecha.toLocaleDateString()}:</h3>
-            
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
-                {horasDelDia.map(hora => (
-                    <label 
-                        key={hora} 
-                        style={{
-                            padding: '10px', 
-                            border: '1px solid #ccc', 
-                            borderRadius: '5px',
-                            backgroundColor: horasSeleccionadas.includes(hora) ? '#4CAF50' : '#f9f9f9',
-                            color: horasSeleccionadas.includes(hora) ? 'white' : 'black',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        <input 
-                            type="checkbox" 
-                            style={{ display: 'none' }} 
-                            checked={horasSeleccionadas.includes(hora)} 
-                            onChange={() => toggleHora(hora)} 
-                        />
-                        {hora}
-                    </label>
-                ))}
-            </div>
+    <div className="calendar-wrapper">
+      <Calendar
+        onChange={setFecha}
+        value={fecha}
+        minDate={new Date()}
+      />
+    </div>
 
-            <button 
-                onClick={guardarHorarios}
-                style={{ padding: '10px 20px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}
-            >
-                Guardar Horarios
-            </button>
+    <h3>Horarios para el {fecha.toLocaleDateString()}:</h3>
 
-            {mensaje && <p style={{ marginTop: '15px', fontWeight: 'bold' }}>{mensaje}</p>}
-        </div>
-    );
+    <div className="horas-container">
+      {horasDelDia.map(hora => (
+        <label
+            key={hora}
+            className={`hora-item ${horasSeleccionadas.includes(hora) ? "activo" : ""}`}
+        >
+        <input
+            type="checkbox"
+            checked={horasSeleccionadas.includes(hora)}
+            onChange={() => toggleHora(hora)}
+          />
+          {hora}
+        </label>
+      ))}
+    </div>
+
+    <button className="btn-guardar" onClick={guardarHorarios}>
+        Guardar Horarios
+    </button>
+
+    {mensaje && <p className="mensaje">{mensaje}</p>}
+    </div>
+);
 };
 
 export default GestionarHorarios;

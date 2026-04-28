@@ -49,9 +49,9 @@ const Historial = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#f4f7f6', minHeight: '100vh' }}>
+        <div style={{ backgroundColor: '#f4f7f6', minHeight: '100vh' }} className="page-container">
             <NavBar />
-            <main style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
+            <main style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }} className="page-content">
                 <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>Mis Citas</h1>
 
                 {loading ? (

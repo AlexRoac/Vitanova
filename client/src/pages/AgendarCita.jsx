@@ -8,9 +8,9 @@ const AgendarCita = () => {
     const [psicologo, setPsicologo] = useState(null);
 
     return (
-        <div>
-            <NavBar />
-            <main style={{ minHeight: '80vh', padding: '50px', textAlign: 'center' }}>
+        <div className="page-container">
+            <NavBar/>
+            <main style={{ minHeight: '80vh', padding: '50px', textAlign: 'center' }} className="page-content">
                 <h1>Reserva tu Cita</h1>
                 
                 {/* El dropdown ahora es una sola línea */}

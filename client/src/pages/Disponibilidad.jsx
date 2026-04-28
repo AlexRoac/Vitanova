@@ -8,9 +8,14 @@ const DisponibilidadPage = () => {
         <div className="page-container">
             <NavBar />
             
-            <main style={{ minHeight: '80vh', padding: '40px 20px' }}>
+            <main style={{
+                    minHeight: '80vh',
+                    padding: '40px 20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start'
+                }} className="page-content">
                 <div className="container">
-                    <h1 style={{ textAlign: 'center', color: '#2c3e50' }}>Panel del Psicólogo</h1>
                     <hr />
                     {/* Aquí insertamos el componente de lógica que creamos */}
                     <GestionarHorarios />
