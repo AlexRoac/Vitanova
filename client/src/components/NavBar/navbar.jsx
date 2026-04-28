@@ -34,8 +34,10 @@ function NavBar() {
     return (
         <div className="container-nav">
             <div className="logo-container">
-                <img src={logoV3} alt="Logo V3" className="logoV3" />
-                <img src={logoV4} alt="Logo V4" className="logoV4" />
+                <a href="/inicio">
+                    <img src={logoV3} alt="Logo V3" className="logoV3" />
+                    <img src={logoV4} alt="Logo V4" className="logoV4" />
+                </a>
             </div>
             
             <div className="menubtn-container">

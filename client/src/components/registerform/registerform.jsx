@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../loginform/loginform.css'; 
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+import { default as logoV4 } from "../../assets/Logo_Vita4.png";
 
 function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handleSubmit, onGoogleSuccess, onGoogleError  }) {
 
@@ -27,6 +28,9 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
         
         {step === 1 && (
           <>
+            <a href="/inicio">
+              <img src={logoV4} alt="Logo V4" className="logoV4" />
+            </a>
             <h1>Crear cuenta</h1>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '15px' }}>
               <GoogleLogin
@@ -117,7 +121,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <div style={{ flex: 1 }}>
                   <label>Género (Opcional)</label>
-                  <select name="genero" value={formData.genero} onChange={handleChange}>
+                  <select name="genero" value={formData.genero} onChange={handleChange} className="select-box">
                     <option value="">Selecciona tu género</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
@@ -126,7 +130,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
                 </div>
                 <div style={{ flex: 1 }}>
                   <label>Estado civil</label>
-                  <select name="estado_civil" value={formData.estado_civil} onChange={handleChange}>
+                  <select name="estado_civil" value={formData.estado_civil} onChange={handleChange} className="select-box">
                     <option value="">Selecciona</option>
                     <option value="Soltero/a">Soltero/a</option>
                     <option value="Casado/a">Casado/a</option>
