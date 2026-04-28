@@ -23,12 +23,7 @@ function PacienteGestion() {
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api"; 
 
   //Bloquear el scroll del modal
-  useEffect(() => {
-  document.body.style.overflow = "hidden";
-  return () => {
-    document.body.style.overflow = "auto";
-  };
-  }, []);
+
 
   //Salir con ESC
   useEffect(() => {
@@ -132,7 +127,7 @@ function PacienteGestion() {
     setVistaModal("detalle"); 
     setContenidoNota(""); 
     setFechasCitas({ ultima: "Calculando...", proxima: "Calculando..." }); // Reiniciamos el texto
-    
+    document.body.style.overflow = "hidden";
     // Disparamos el cálculo de las fechas
     calcularFechasCitas(idReal);
   };
