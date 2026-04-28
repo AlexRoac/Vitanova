@@ -1,151 +1,214 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import '../Horarios/GestionHorarios.css';
+import Swal from 'sweetalert2';
 
 const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
     const [fecha, setFecha] = useState(new Date());
     const [horasDisponibles, setHorasDisponibles] = useState([]);
     const [horaSeleccionada, setHoraSeleccionada] = useState(null);
-    const [mensaje, setMensaje] = useState("");
+    const [fechasDisponibles, setFechasDisponibles] = useState([]);
+    const [cargando, setCargando] = useState(false);
 
-    // 1. Obtener los datos del paciente desde 'usuario' como vimos en tu Application Storage
     const pacienteStorage = localStorage.getItem('usuario');
     const paciente = pacienteStorage ? JSON.parse(pacienteStorage) : null;
 
+    // ✅ FORMATEO LOCAL (SOLUCIONA BUG DE FECHAS)
+    const formatearFechaLocal = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const fechaLabel = fecha.toLocaleDateString('es-MX', {
+        weekday: 'long', day: 'numeric', month: 'long'
+    });
+
+    // 🔥 CARGAR FECHAS DISPONIBLES (para pintar calendario)
+    useEffect(() => {
+        const cargarFechas = async () => {
+            if (!psicologoId) return;
+
+            try {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/fechas/${psicologoId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setFechasDisponibles(data);
+                }
+            } catch (error) {
+                console.error("Error al cargar fechas:", error);
+            }
+        };
+
+        cargarFechas();
+    }, [psicologoId]);
+
+    // 🔥 CARGAR HORAS DEL DÍA
     useEffect(() => {
         const cargarDisponibilidad = async () => {
             if (!psicologoId) return;
-            
-            const fechaISO = fecha.toISOString().split('T')[0];
+
+            const fechaISO = formatearFechaLocal(fecha);
+
             try {
-                // GET a /api/disponibilidad/:id/:fecha
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/${psicologoId}/${fechaISO}`);
                 if (res.ok) {
                     const data = await res.json();
-                    setHorasDisponibles(data); 
+                    setHorasDisponibles(data);
                     setHoraSeleccionada(null);
-                    setMensaje("");
                 }
             } catch (error) {
                 console.error("Error al cargar disponibilidad:", error);
             }
         };
+
         cargarDisponibilidad();
     }, [fecha, psicologoId]);
 
+    // 🔥 VERIFICAR DISPONIBILIDAD PARA PINTAR DÍA
+    const tieneDisponibilidad = (date) => {
+        const fechaLocal = formatearFechaLocal(date);
+        return fechasDisponibles.includes(fechaLocal);
+    };
+
     const agendarCita = async () => {
-        if (!horaSeleccionada) {
-            alert("Por favor, selecciona una hora.");
-            return;
-        }
+        if (!horaSeleccionada) return;
 
         if (!paciente) {
-            setMensaje("❌ Error: Debes iniciar sesión como paciente.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Sesión requerida',
+                text: 'Debes iniciar sesión como paciente para agendar una cita.',
+                confirmButtonColor: '#60A6BF'
+            });
             return;
         }
 
+        const confirmacion = await Swal.fire({
+            title: '¿Confirmar cita?',
+            html: `
+                <p>
+                    <strong>${nombrePsicologo}</strong><br/>
+                    ${fechaLabel} a las <strong>${horaSeleccionada}</strong>
+                </p>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, confirmar',
+            confirmButtonColor: '#60A6BF',
+            cancelButtonColor: '#aab8c2',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!confirmacion.isConfirmed) return;
+
+        setCargando(true);
+
         try {
-            // CORRECCIÓN DE RUTA: 
-            // Tu server.js usa /api/disponibilidad
-            // Tu disponibilidad.js tiene la ruta /reservar
             const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/reservar`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    pacienteId: paciente.id, // Usamos 'id' que es lo que hay en tu storage
-                    psicologoId: psicologoId,
-                    fecha: fecha.toISOString().split('T')[0],
+                    pacienteId: paciente.id,
+                    psicologoId,
+                    fecha: formatearFechaLocal(fecha),
                     hora: horaSeleccionada
                 })
             });
 
-            const data = await res.json();
-
             if (res.ok) {
-                setMensaje("✅ ¡Cita agendada con éxito!");
-                // Quitamos la hora de la lista para que no se pueda volver a elegir
-                setHorasDisponibles(horasDisponibles.filter(h => h !== horaSeleccionada));
+                setHorasDisponibles(prev => prev.filter(h => h !== horaSeleccionada));
                 setHoraSeleccionada(null);
-            } else {
-                setMensaje(`❌ ${data.error || "No se pudo agendar la cita."}`);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Cita confirmada!',
+                    timer: 3000
+                });
             }
+
         } catch (error) {
-            console.error("Error en la reserva:", error);
-            setMensaje("❌ Error de conexión con el servidor.");
+            console.error(error);
+        } finally {
+            setCargando(false);
         }
     };
 
     return (
-        <div style={{ textAlign: 'center', padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-            <h2 style={{ color: '#333' }}>Agendar Cita</h2>
-            <p>Psicólogo: <strong>{nombrePsicologo}</strong></p>
-            
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-                <Calendar 
-                    onChange={setFecha} 
-                    value={fecha} 
-                    minDate={new Date()} 
-                />
+        <div className="agendar-cita-container">
+
+            <div className="disp-header">
+                <h2>Agendar Cita</h2>
+                <p className="disp-subheader">
+                    Especialista: <strong>{nombrePsicologo}</strong>
+                </p>
+                <div className="disp-divider"></div>
             </div>
 
-            <h3>Horarios disponibles para el {fecha.toLocaleDateString()}:</h3>
-            
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginTop: '15px' }}>
-                {horasDisponibles.length > 0 ? (
-                    horasDisponibles.map(hora => (
-                        <button
-                            key={hora}
-                            onClick={() => setHoraSeleccionada(hora)}
-                            style={{
-                                padding: '10px 20px',
-                                borderRadius: '8px',
-                                border: '2px solid #007BFF',
-                                backgroundColor: horaSeleccionada === hora ? '#007BFF' : 'white',
-                                color: horaSeleccionada === hora ? 'white' : '#007BFF',
-                                cursor: 'pointer',
-                                fontWeight: 'bold',
-                                transition: '0.3s'
-                            }}
-                        >
-                            {hora}
-                        </button>
-                    ))
-                ) : (
-                    <p style={{ color: '#666', fontStyle: 'italic' }}>No hay turnos libres para este día.</p>
-                )}
+            <div className="agendar-layout">
+
+                <div className="disp-calendar-section">
+                    <span className="disp-section-label">Elige tu fecha</span>
+
+                    <Calendar
+                        onChange={(d) => setFecha(d)}
+                        value={fecha}
+                        minDate={new Date()}
+                        locale="es-MX"
+                        tileClassName={({ date, view }) => {
+                            if (view === 'month' && tieneDisponibilidad(date)) {
+                                return 'dia-disponible';
+                            }
+                        }}
+                    />
+                </div>
+
+                <div className="disp-horas-section">
+                    <span className="disp-section-label">Horarios disponibles</span>
+
+                    <div className="disp-fecha-badge">
+                        🗓 {fechaLabel}
+                    </div>
+
+                    {horasDisponibles.length > 0 ? (
+                        <div className="horas-container">
+                            {horasDisponibles.map(hora => (
+                                <button
+                                    key={hora}
+                                    className={`hora-disponible ${horaSeleccionada === hora ? "seleccionada" : ""}`}
+                                    onClick={() => setHoraSeleccionada(hora)}
+                                >
+                                    {hora}
+                                </button>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="horas-vacio">
+                            Sin turnos disponibles para este día.
+                        </div>
+                    )}
+
+                    <p className="horas-hint">Selecciona una hora para continuar</p>
+                </div>
             </div>
 
             {horaSeleccionada && (
-                <div style={{ marginTop: '30px', padding: '20px', border: '1px dashed #28a745', borderRadius: '10px' }}>
-                    <p>Vas a reservar a las <strong>{horaSeleccionada}</strong></p>
-                    <button 
+                <div className="confirmacion-box">
+                    <p>
+                        Reserva con <strong>{nombrePsicologo}</strong><br />
+                        el {fechaLabel} a las <strong>{horaSeleccionada}</strong>
+                    </p>
+
+                    <button
+                        className="btn-confirmar"
                         onClick={agendarCita}
-                        style={{ 
-                            padding: '12px 30px', 
-                            backgroundColor: '#28a745', 
-                            color: 'white', 
-                            border: 'none', 
-                            borderRadius: '5px', 
-                            cursor: 'pointer',
-                            fontSize: '16px',
-                            fontWeight: 'bold'
-                        }}
+                        disabled={cargando}
                     >
-                        Confirmar Cita
+                        {cargando ? "Confirmando..." : "Confirmar cita"}
                     </button>
                 </div>
-            )}
-
-            {mensaje && (
-                <p style={{ 
-                    marginTop: '20px', 
-                    padding: '10px', 
-                    borderRadius: '5px',
-                    backgroundColor: mensaje.includes('✅') ? '#d4edda' : '#f8d7da',
-                    color: mensaje.includes('✅') ? '#155724' : '#721c24'
-                }}>
-                    {mensaje}
-                </p>
             )}
         </div>
     );

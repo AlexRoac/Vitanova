@@ -1,74 +1,586 @@
+/* =============================================
+   GESTIÓN DE HORARIOS — Vitanova Psicología
+   ============================================= */
+
+/* Página wrapper */
+.disponibilidad-page {
+  min-height: 80vh;
+  padding: 48px 20px 60px;
+  background: #f4f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+}
+
+/* Card principal */
 .disponibilidad-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 👈 centra TODO */
-    text-align: center;
-
-    font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 780px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 32px rgba(32, 35, 67, 0.08);
+  padding: 48px 48px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
-/* Calendar */
-.calendar-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+/* Encabezado */
+.disp-header {
+  text-align: center;
+  margin-bottom: 32px;
+  width: 100%;
 }
 
-/* Horas */
+.disp-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #202343;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.3px;
+}
+
+.disp-header .disp-subheader {
+  font-size: 0.9rem;
+  color: #7a8fa6;
+  margin: 0;
+}
+
+.disp-header .disp-subheader strong {
+  color: #60A6BF;
+  font-weight: 600;
+}
+
+/* Divider decorativo */
+.disp-divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, #60A6BF, #3ecfb2);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+/* Layout de dos columnas */
+.disp-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Sección izquierda — calendario */
+.disp-calendar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.disp-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #60A6BF;
+  margin-bottom: 4px;
+}
+
+/* Override react-calendar */
+.react-calendar {
+  width: 100% !important;
+  border: 1.5px solid #e8eef4 !important;
+  border-radius: 14px !important;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif !important;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(96, 166, 191, 0.08);
+}
+
+.react-calendar__navigation {
+  background: #202343 !important;
+  border-radius: 12px 12px 0 0 !important;
+  margin-bottom: 0 !important;
+  height: 48px !important;
+}
+
+.react-calendar__navigation button {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  min-width: 36px !important;
+}
+
+.react-calendar__navigation button:hover,
+.react-calendar__navigation button:focus {
+  background: rgba(96, 166, 191, 0.2) !important;
+  border-radius: 8px !important;
+}
+
+.react-calendar__navigation__label {
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.react-calendar__month-view__weekdays {
+  background: #f4f7fa !important;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: #7a8fa6 !important;
+  text-transform: uppercase !important;
+  padding: 8px 0 !important;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none !important;
+}
+
+.react-calendar__tile {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: #202343 !important;
+  border-radius: 8px !important;
+  padding: 10px 6px !important;
+  transition: background 0.15s !important;
+}
+
+.react-calendar__tile:hover {
+  background: rgba(96, 166, 191, 0.12) !important;
+  color: #202343 !important;
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--active:hover {
+  background: #60A6BF !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.react-calendar__tile--now {
+  background: rgba(96, 166, 191, 0.08) !important;
+  color: #60A6BF !important;
+  font-weight: 700 !important;
+}
+
+.react-calendar__tile--now.react-calendar__tile--active {
+  background: #60A6BF !important;
+  color: #ffffff !important;
+}
+
+.react-calendar__tile:disabled {
+  background: transparent !important;
+  color: #c8d4de !important;
+  cursor: not-allowed !important;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #c8d4de !important;
+}
+
+/* Sección derecha — horarios */
+.disp-horas-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.disp-fecha-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(96, 166, 191, 0.08);
+  border: 1px solid rgba(96, 166, 191, 0.2);
+  color: #3a7fa0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+/* Grid de horas */
 .horas-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 4px;
 }
 
 /* Cada hora */
 .hora-item {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border: 1.5px solid #e0eaf2;
+  border-radius: 10px;
+  background: #f9fbfd;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.18s ease;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #4a6070;
+  letter-spacing: 0.3px;
 }
 
-/* Ocultar checkbox */
+.hora-item:hover {
+  border-color: #60A6BF;
+  background: rgba(96, 166, 191, 0.07);
+  color: #202343;
+  transform: translateY(-1px);
+}
+
 .hora-item input {
-    display: none;
+  display: none;
 }
 
-/* Activo */
 .hora-item.activo {
-    background-color: #4CAF50;
-    color: white;
-    border-color: #4CAF50;
+  background: #202343;
+  border-color: #202343;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(32, 35, 67, 0.2);
+  transform: translateY(-1px);
 }
 
-/* Botón */
+.hora-item.activo:hover {
+  background: #2d3260;
+  border-color: #2d3260;
+}
+
+/* Hint de selección */
+.horas-hint {
+  font-size: 0.75rem;
+  color: #9ab0c0;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Counter badge */
+.horas-counter {
+  font-size: 0.78rem;
+  color: #60A6BF;
+  font-weight: 600;
+  text-align: right;
+  margin-top: 2px;
+}
+
+/* Botón guardar */
+.btn-guardar-wrapper {
+  width: 100%;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
 .btn-guardar {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: 0.2s;
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #60A6BF 0%, #4d94ad 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(96, 166, 191, 0.35);
 }
 
 .btn-guardar:hover {
-    background-color: #0056b3;
+  background: linear-gradient(135deg, #4d94ad 0%, #3a7f96 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(96, 166, 191, 0.45);
 }
 
-/* Mensaje */
+.btn-guardar:active {
+  transform: scale(0.98);
+}
+
+.btn-guardar:focus-visible {
+  outline: 2.5px solid #3ecfb2;
+  outline-offset: 3px;
+}
+
+/* Mensaje de estado */
 .mensaje {
-    margin-top: 15px;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  justify-content: center;
+}
+
+.mensaje.exito {
+  background: #e8f8f0;
+  color: #1a7a4a;
+  border: 1px solid #a8e6c5;
+}
+
+.mensaje.error {
+  background: #fef0f0;
+  color: #c0392b;
+  border: 1px solid #f5c0bc;
+}
+
+/* Loading state */
+.disp-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 16px;
+  color: #7a8fa6;
+  font-size: 0.9rem;
+}
+
+.disp-loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e0eaf2;
+  border-top-color: #60A6BF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =====================
+   SELECTOR PSICÓLOGO
+   ===================== */
+
+.selector-psicologo-wrapper {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 32px;
+}
+
+.selector-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #60A6BF;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.selector-psicologo {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #e0eaf2;
+  background: #f9fbfd;
+  color: #202343;
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2360A6BF' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.selector-psicologo:focus {
+  border-color: #60A6BF;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(96, 166, 191, 0.12);
+}
+
+/* =====================
+   AGENDAR CITA (SeleccionarCita)
+   ===================== */
+
+.agendar-cita-container {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.agendar-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 8px;
+}
+
+/* Confirmación */
+.confirmacion-box {
+  background: linear-gradient(135deg, rgba(96,166,191,0.06) 0%, rgba(62,207,178,0.06) 100%);
+  border: 1.5px solid rgba(96, 166, 191, 0.25);
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.confirmacion-box p {
+  font-size: 0.95rem;
+  color: #4a6070;
+  margin: 0 0 16px 0;
+}
+
+.confirmacion-box p strong {
+  color: #202343;
+  font-size: 1.1rem;
+}
+
+.btn-confirmar {
+  padding: 14px 36px;
+  background: #202343;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(32, 35, 67, 0.25);
+}
+
+.btn-confirmar:hover {
+  background: #2d3260;
+  transform: translateY(-1px);
+}
+
+.btn-confirmar:active { transform: scale(0.98); }
+
+/* Hora disponible (paciente) */
+.hora-disponible {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1.5px solid #e0eaf2;
+  background: #f9fbfd;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #4a6070;
+  transition: all 0.18s ease;
+}
+
+.hora-disponible:hover {
+  border-color: #60A6BF;
+  background: rgba(96, 166, 191, 0.07);
+  color: #202343;
+}
+
+.hora-disponible.seleccionada {
+  background: #60A6BF;
+  border-color: #60A6BF;
+  color: #ffffff;
+  box-shadow: 0 3px 12px rgba(96, 166, 191, 0.35);
+}
+
+/* Estado vacío */
+.horas-vacio {
+  text-align: center;
+  padding: 32px 20px;
+  color: #9ab0c0;
+  font-size: 0.88rem;
+  font-style: italic;
+  background: #f9fbfd;
+  border-radius: 12px;
+  border: 1.5px dashed #d0dfe8;
+  width: 100%;
+}
+
+/* Page header — AgendarCita */
+.agendar-page-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.agendar-page-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #202343;
+  margin: 0 0 8px 0;
+}
+
+.agendar-page-header p {
+  font-size: 0.92rem;
+  color: #7a8fa6;
+  margin: 0;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+
+@media (max-width: 720px) {
+  .disponibilidad-container {
+    padding: 32px 20px 28px;
+    border-radius: 16px;
+  }
+
+  .disp-layout,
+  .agendar-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .horas-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .disponibilidad-page {
+    padding: 24px 12px 48px;
+  }
+
+  .agendar-page-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .horas-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 🔥 PUNTO VERDE EN DÍAS DISPONIBLES */
+.dia-disponible {
+  position: relative;
+}
+
+.dia-disponible::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #22c55e;
+  border-radius: 50%;
+}
+
+/* opcional bonito */
+.dia-disponible:hover {
+  background: rgba(34, 197, 94, 0.12) !important;
 }

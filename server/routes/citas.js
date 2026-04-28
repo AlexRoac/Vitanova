@@ -256,4 +256,36 @@ router.put('/cancelar/:id', async (req, res) => {
     }
 });
 
+// ==========================================
+// 6. OBTENER FECHAS CON DISPONIBILIDAD
+// ==========================================
+router.get('/fechas/:psicologoId', async (req, res) => {
+    const { psicologoId } = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT DISTINCT fecha 
+             FROM disponibilidad 
+             WHERE psicologo_id = $1 
+             AND ocupado = FALSE
+             ORDER BY fecha ASC`,
+            [psicologoId]
+        );
+
+        // 🔥 FIX REAL AQUÍ
+        const fechas = result.rows.map(row => {
+            if (row.fecha instanceof Date) {
+                return row.fecha.toISOString().split('T')[0];
+            }
+            return row.fecha; // ya viene como string tipo '2026-05-14'
+        });
+
+        res.json(fechas);
+
+    } catch (error) {
+        console.error("ERROR FECHAS:", error); // 👈 IMPORTANTE
+        res.status(500).json({ error: "Error al obtener fechas disponibles" });
+    }
+});
+
 module.exports = router;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar/navbar';
 import Footer from '../components/Footer/Footer';
 import CitaCard from '../components/Citas/CitaCard';
+import Swal from 'sweetalert2';
 
 const Historial = () => {
     const [citas, setCitas] = useState([]);
@@ -27,9 +28,24 @@ const Historial = () => {
         cargarCitas();
     }, [usuario?.id]);
 
-    // Función para manejar la cancelación de la cita
     const cancelarCita = async (idCita) => {
-        if (!window.confirm("¿Estás seguro de que deseas cancelar esta cita? El horario será liberado.")) return;
+        const confirmacion = await Swal.fire({
+            title: '¿Cancelar esta cita?',
+            html: `
+                <p style="color:#4a6070; margin:0; font-size:0.92rem; line-height:1.7">
+                    Esta acción <strong style="color:#c0392b">no se puede deshacer</strong>.<br/>
+                    El horario será liberado para otros pacientes.
+                </p>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#c0392b',
+            cancelButtonColor: '#aab8c2',
+            confirmButtonText: 'Sí, cancelar cita',
+            cancelButtonText: 'No, mantener'
+        });
+
+        if (!confirmacion.isConfirmed) return;
 
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/cancelar/${idCita}`, {
@@ -37,14 +53,34 @@ const Historial = () => {
             });
 
             if (res.ok) {
-                alert("Cita cancelada con éxito");
-                // Recarga la página para actualizar la lista de citas
-                window.location.reload(); 
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Cita cancelada',
+                    text: 'La cita ha sido cancelada y el horario fue liberado.',
+                    confirmButtonColor: '#60A6BF',
+                    confirmButtonText: 'Entendido',
+                    timer: 4000,
+                    timerProgressBar: true
+                });
+                setCitas(prev => prev.filter(c => c.id !== idCita));
             } else {
-                alert("Error al cancelar la cita");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al cancelar',
+                    text: 'No se pudo cancelar la cita. Intenta de nuevo.',
+                    confirmButtonColor: '#60A6BF',
+                    confirmButtonText: 'Cerrar'
+                });
             }
         } catch (error) {
             console.error("Error en la solicitud de cancelación:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de conexión',
+                text: 'No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.',
+                confirmButtonColor: '#60A6BF',
+                confirmButtonText: 'Cerrar'
+            });
         }
     };
 
@@ -57,12 +93,11 @@ const Historial = () => {
                 {loading ? (
                     <p>Cargando tus citas...</p>
                 ) : citas.length > 0 ? (
-                    // Aquí le pasamos la función onCancelar al componente CitaCard
                     citas.map(cita => (
-                        <CitaCard 
-                            key={cita.id} 
-                            cita={cita} 
-                            onCancelar={cancelarCita} 
+                        <CitaCard
+                            key={cita.id}
+                            cita={cita}
+                            onCancelar={cancelarCita}
                         />
                     ))
                 ) : (

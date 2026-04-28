@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../Horarios/GestionHorarios.css';
 
 const SelectorPsicologo = ({ alSeleccionar }) => {
     const [psicologos, setPsicologos] = useState([]);
@@ -6,12 +7,8 @@ const SelectorPsicologo = ({ alSeleccionar }) => {
     useEffect(() => {
         const cargarData = async () => {
             try {
-                // Asegúrate de que REACT_APP_API_URL en tu .env termine en /api
-                // O escríbelo directo para probar: "http://localhost:5000/api/psicologos"
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/psicologos`);
-                
                 if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-                
                 const data = await res.json();
                 setPsicologos(data);
             } catch (err) {
@@ -22,16 +19,18 @@ const SelectorPsicologo = ({ alSeleccionar }) => {
     }, []);
 
     return (
-        <div style={{ marginBottom: '30px', textAlign: 'center' }}>
-            <select 
+        <div className="selector-psicologo-wrapper">
+            <label className="selector-label">Elige tu especialista</label>
+            <select
+                className="selector-psicologo"
                 onChange={(e) => {
                     const id = parseInt(e.target.value);
                     const p = psicologos.find(ps => ps.id_usuario === id);
-                    alSeleccionar(p);
+                    alSeleccionar(p || null);
                 }}
-                style={{ padding: '10px', borderRadius: '8px', width: '100%', maxWidth: '300px' }}
+                defaultValue=""
             >
-                <option value="">-- Elige un especialista --</option>
+                <option value="" disabled>— Selecciona un especialista —</option>
                 {psicologos.map(p => (
                     <option key={p.id_usuario} value={p.id_usuario}>
                         {p.nombre} {p.apellido}

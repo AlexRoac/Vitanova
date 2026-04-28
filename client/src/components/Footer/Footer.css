@@ -1,104 +1,205 @@
-.footer-container {
-  display: flex;
-  background-color: #202343;
+/* =====================
+   FOOTER — Vitanova
+   ===================== */
+
+.main-footer {
   width: 100%;
-  padding: 40px 0;
+  background-color: #202343;
   font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
 }
 
+/* Línea decorativa superior */
+.main-footer::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #60A6BF, #3ecfb2, #60A6BF, transparent);
+}
 
+/* Cuerpo principal — 3 columnas en fila */
+.footer-container {
+  display: flex;
+  flex-direction: row;        /* ← CLAVE: asegura fila horizontal */
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 48px 60px 36px;
+  gap: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Columna base */
 .fcontainer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 20px;
+  align-items: flex-start;
   color: white;
+  min-width: 0;               /* ← evita overflow en flex */
 }
 
+/* Títulos de sección */
 .fcontainer h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #60A6BF;
+  margin: 0 0 18px 0;
+  padding-bottom: 10px;
+  position: relative;
+  white-space: nowrap;
 }
 
+.fcontainer h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: #60A6BF;
+  border-radius: 2px;
+}
 
+/* Párrafos descriptivos */
 .fcontainer p {
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-  text-align: center;
-  color: #d1d1d1;
+  font-size: 0.84rem;
+  color: #8fa3b8;
+  line-height: 1.65;
+  margin: 0 0 12px 0;
 }
 
-.datos-columna {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;              
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.footer-input {
-  width: 100%;
-  max-width: 280px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 20px;
-  border: none;
-  background: #D9D9D9;
-}
-
-.footer-button {
-  width: 100%;
-  max-width: 280px;
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-  background-color: #60A6BF;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.footer-button:focus-visible{
-    outline: 2.5px solid blue;
-}
-
-.footer-input:focus-visible{
-    outline: 2.5px solid blue;
-
-}
-
-
+/* Lista de contacto */
 .footer-contact {
-  list-style: none;  
-  padding: 0;        
-  margin: 0;          
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 15px;        
-  align-items: center;
+  gap: 10px;
 }
-
 
 .footer-contact li {
-  font-size: 0.95rem;
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.88rem;
+  color: #b0c4d8;
+  font-family: 'Montserrat', sans-serif;
 }
 
+/* Input */
+.footer-input {
+  width: 100%;
+  max-width: 260px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(96, 166, 191, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
+.footer-input::placeholder {
+  color: #5a6a7e;
+}
+
+.footer-input:focus {
+  border-color: #60A6BF;
+  background: rgba(96, 166, 191, 0.08);
+}
+
+/* Botón */
+.footer-button {
+  width: 100%;
+  max-width: 260px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #60A6BF;
+  background-color: #60A6BF;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  text-align: center;
+}
+
+.footer-button:hover {
+  background-color: #4d94ad;
+  border-color: #4d94ad;
+}
+
+.footer-button:active {
+  transform: scale(0.98);
+}
+
+.footer-button:focus-visible {
+  outline: 2.5px solid #3ecfb2;
+  outline-offset: 2px;
+}
+
+.footer-input:focus-visible {
+  outline: 2.5px solid #3ecfb2;
+  outline-offset: 2px;
+}
+
+/* Divisor inferior */
+.footer-container + .footer-bottom,
+.footer-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0 60px;
+}
+
+/* Barra de copyright */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 60px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copyright {
+  font-size: 0.75rem;
+  color: #5a6a7e;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.footer-copyright span {
+  color: #60A6BF;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
 @media (max-width: 768px) {
   .footer-container {
     flex-direction: column;
-    align-items: center;
+    padding: 36px 24px 24px;
+    gap: 32px;
   }
-
 
   .fcontainer {
     width: 100%;
-    max-width: 400px;
-    margin-bottom: 30px;
+  }
+
+  .footer-input,
+  .footer-button {
+    max-width: 100%;
+  }
+
+  .footer-bottom {
+    padding: 16px 24px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

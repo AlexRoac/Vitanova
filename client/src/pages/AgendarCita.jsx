@@ -9,21 +9,44 @@ const AgendarCita = () => {
 
     return (
         <div className="page-container">
-            <NavBar/>
-            <main style={{ minHeight: '80vh', padding: '50px', textAlign: 'center' }} className="page-content">
-                <h1>Reserva tu Cita</h1>
-                
-                {/* El dropdown ahora es una sola línea */}
-                <SelectorPsicologo alSeleccionar={setPsicologo} />
+            <NavBar />
+            <main className="disponibilidad-page page-content">
+                <div style={{ width: '100%', maxWidth: '780px' }}>
 
-                {psicologo ? (
-                    <SeleccionarCita 
-                        psicologoId={psicologo.id_usuario} 
-                        nombrePsicologo={`${psicologo.nombre} ${psicologo.apellido}`} 
-                    />
-                ) : (
-                    <p>Selecciona un psicólogo para ver su agenda.</p>
-                )}
+                    <div className="agendar-page-header">
+                        <h1>Reserva tu Cita</h1>
+                        <p>Selecciona un especialista y elige el horario que mejor se adapte a ti.</p>
+                    </div>
+
+                    <SelectorPsicologo alSeleccionar={setPsicologo} />
+
+                    {psicologo ? (
+                        <div style={{
+                            background: '#ffffff',
+                            borderRadius: '20px',
+                            boxShadow: '0 4px 32px rgba(32, 35, 67, 0.08)',
+                            padding: '48px 48px 40px'
+                        }}>
+                            <SeleccionarCita
+                                psicologoId={psicologo.id_usuario}
+                                nombrePsicologo={`${psicologo.nombre} ${psicologo.apellido}`}
+                            />
+                        </div>
+                    ) : (
+                        <div style={{
+                            textAlign: 'center',
+                            padding: '48px 24px',
+                            background: '#f9fbfd',
+                            borderRadius: '16px',
+                            border: '1.5px dashed #d0dfe8',
+                            color: '#9ab0c0',
+                            fontSize: '0.92rem'
+                        }}>
+                            Selecciona un especialista para ver su agenda disponible.
+                        </div>
+                    )}
+
+                </div>
             </main>
             <Footer />
         </div>
