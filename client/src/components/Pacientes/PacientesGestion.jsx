@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Swal from 'sweetalert2'; // <-- Importamos SweetAlert2
 import './Pacientes.css'; 
 
 function PacienteGestion() {
@@ -31,7 +32,7 @@ function PacienteGestion() {
 
   //Salir con ESC
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
+    const handleEsc = (e) => {
       if (e.key === "Escape") cerrarModal();
     };
     window.addEventListener("keydown", handleEsc);
@@ -140,10 +141,14 @@ function PacienteGestion() {
     setPacienteSeleccionado(null);
   };
 
-  // ... (Tus funciones guardarNuevaNota y cargarNotasPasadas se quedan igual) ...
   const guardarNuevaNota = async () => {
     if (!contenidoNota.trim()) {
-      alert("La nota no puede estar vacía.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Atención',
+        text: 'La nota no puede estar vacía.',
+        confirmButtonColor: '#60A6BF'
+      });
       return;
     }
     setGuardando(true);
@@ -162,15 +167,31 @@ function PacienteGestion() {
       });
 
       if (respuesta.ok) {
-        alert("¡Nota guardada exitosamente!");
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: '¡Nota guardada exitosamente!',
+          timer: 2000,
+          showConfirmButton: false
+        });
         setContenidoNota(""); 
         setVistaModal("detalle"); 
       } else {
-        alert("Hubo un error al guardar la nota.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al guardar la nota.',
+          confirmButtonColor: '#60A6BF'
+        });
       }
     } catch (error) {
       console.error("Error de conexión:", error);
-      alert("Error de conexión con el servidor.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de red',
+        text: 'Error de conexión con el servidor.',
+        confirmButtonColor: '#60A6BF'
+      });
     } finally {
       setGuardando(false);
     }
