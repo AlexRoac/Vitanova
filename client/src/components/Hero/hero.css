@@ -131,7 +131,12 @@
     flex-direction: column;
     text-align: center;
   }
-
+  .hero-text h1 {
+    font-size: 28px;
+  }
+  .hero-buttons {    
+    justify-content: center;
+  }
   .nav {
     display: none;
   }

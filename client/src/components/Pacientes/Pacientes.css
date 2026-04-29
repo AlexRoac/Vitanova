@@ -231,3 +231,11 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+.gestion-card{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.user-email {
+    
+}

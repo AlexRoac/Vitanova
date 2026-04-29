@@ -48,17 +48,17 @@ function NavBar() {
                     <>
                         {/* Botones SOLO para el ADMIN */}
                         {usuario.rol === 'admin' && (
-                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Panel Admin</button>
+                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Dashboard</button>
                         )}
 
                         {/* Botones SOLO para el PSICÓLOGO */}
                         {usuario.rol === 'psicologo' && (
-                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Mis Pacientes</button>
+                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Dashboard</button>
                         )}
 
                         {/* Botones SOLO para el PACIENTE */}
                         {usuario.rol === 'paciente' && (
-                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Mis Citas</button>
+                            <button className="menu-btn" onClick={() => navigate("/dashboard")}>Dashboard</button>
                         )}
 
                         {/* Botón COMPARTIDO (Todos lo ven si iniciaron sesión) */}
