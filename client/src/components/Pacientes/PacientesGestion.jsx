@@ -134,6 +134,7 @@ function PacienteGestion() {
 
   const cerrarModal = () => {
     setPacienteSeleccionado(null);
+    document.body.style.overflow = "visible";
   };
 
   const guardarNuevaNota = async () => {
