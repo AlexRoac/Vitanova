@@ -15,18 +15,15 @@ h1{
   background: url("../../assets/Fondo.jpg");
   background-size: cover;
   background-position: center;
+  position: relative;
 }
 .login-page::before {
   content: "";
   position: absolute;
   inset: 0;
 
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 
-  background: rgba(0,0,0,0.2); /* opcional, mejora contraste */
 }
-
 .login-card {
   width: clamp(300px, 90vw, 420px);
   background: rgba(255, 255, 255, 0.95);
@@ -37,10 +34,18 @@ h1{
   z-index: 1;
 }
 .login-card a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    text-align: center;
+    margin-bottom: 5px;
   }
+
+  .logoBV4 {
+  max-width: 80px; 
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;     
+}
 
 .login-card h1 {
   margin: 0 0 1rem;
@@ -176,5 +181,16 @@ h1{
   .login-google,
   .submit-btn {
     transition: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoBV4 {
+    max-width: 90px;
+  }
+}
+@media (max-width: 380px) {
+  .logoBV4 {
+    max-width: 90px;
   }
 }

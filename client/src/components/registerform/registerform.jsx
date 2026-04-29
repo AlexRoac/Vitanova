@@ -35,7 +35,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
         {step === 1 && (
           <>
             <a href="/inicio">
-              <img src={logoV4} alt="Logo V4" className="logoV4" />
+              <img src={logoV4} alt="Logo V4" className="logoBV4" />
             </a>
             <h1>Crear cuenta</h1>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '15px' }}>

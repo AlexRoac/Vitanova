@@ -2,14 +2,14 @@ import React from 'react'
 import './loginform.css'
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { default as logoV4 } from "../../assets/Logo_Vita4.png";
+import { default as logoV4 } from "../../assets/Logo_Vita3.png";
 
 function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoChange, onPasswordChange, onSubmit, onGoogleSuccess, onGoogleError }) {
   return (
     <div className="login-page">
       <div className="login-card">
         <a href="/inicio">
-          <img src={logoV4} alt="Logo V4" className="logoV4" />
+          <img src={logoV4} alt="Logo V4" className="logoBV4" />
         </a>
         <h1>Iniciar sesión</h1>
 
