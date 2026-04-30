@@ -135,9 +135,25 @@ function NavBar() {
                     {usuario ? (
                         <>
                             {(usuario.rol === 'admin' || usuario.rol === 'psicologo' || usuario.rol === 'paciente') && (
-                                <button className="menu-btn" onClick={() => navigate("/dashboard")}>Dashboard</button>
+                                <>
+                                    {/* Solo se muestra si NO estamos en dashboard */}
+                                    {location.pathname !== "/dashboard" && (
+                                        <button className="menu-btn" onClick={() => navigate("/dashboard")}>
+                                            Dashboard
+                                        </button>
+                                    )}
+                                    
+                                    {/* Solo se muestra si SÍ estamos en dashboard */}
+                                    {location.pathname === "/dashboard" && (
+                                        <button className="menu-btn" onClick={() => navigate("/inicio")}>
+                                            Inicio
+                                        </button>
+                                    )}
+                                </>
                             )}
-                            <button className="menu-btn logout-btn" onClick={handleLogout}>Cerrar sesión</button>
+                            <button className="menu-btn logout-btn" onClick={handleLogout}>
+                                Cerrar sesión
+                            </button>
                         </>
                     ) : (
                         <>
