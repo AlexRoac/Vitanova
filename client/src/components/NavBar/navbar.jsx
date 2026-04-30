@@ -59,7 +59,13 @@ function NavBar() {
                 setUsuario(null);
                 setMenuOpen(false);
                 navigate("/inicio");
-                Swal.fire('¡Hasta luego!', 'Has cerrado sesión exitosamente.', 'success');
+                Swal.fire({
+                    title: '¡Hasta luego!',
+                    text: 'Has cerrado sesión exitosamente.',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false, 
+                });
             }
         });
     };

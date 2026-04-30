@@ -70,8 +70,8 @@ const GestionarHorarios = () => {
             `,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#202343',
-            cancelButtonColor: '#aab8c2',
+            confirmButtonColor: '#60A6BF',
+            cancelButtonColor: 'rgb(177, 78, 78)',
             confirmButtonText: 'Sí, guardar',
             cancelButtonText: 'Cancelar'
         });
