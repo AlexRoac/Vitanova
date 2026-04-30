@@ -217,6 +217,14 @@
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .menu-btn {
+        padding: 10px 18px;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+}
+
 @media (max-width: 768px) {
     .logoV3 {
         width: 60px;
