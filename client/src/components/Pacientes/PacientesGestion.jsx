@@ -128,6 +128,7 @@ function PacienteGestion() {
     setContenidoNota(""); 
     setFechasCitas({ ultima: "Calculando...", proxima: "Calculando..." }); // Reiniciamos el texto
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     // Disparamos el cálculo de las fechas
     calcularFechasCitas(idReal);
   };
@@ -135,6 +136,7 @@ function PacienteGestion() {
   const cerrarModal = () => {
     setPacienteSeleccionado(null);
     document.body.style.overflow = "visible";
+    document.documentElement.style.overflow = "visible";
   };
 
   const guardarNuevaNota = async () => {
