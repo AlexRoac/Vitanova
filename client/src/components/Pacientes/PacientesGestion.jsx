@@ -252,7 +252,15 @@ function PacienteGestion() {
                 
                 <div className="user-info">
                   <h6 className="user-name">{user.nombre}</h6>
-                  <a href={`mailto:${user.email}`} className="user-email">{user.email}</a>
+                  {user.email && user.email.length > 25 ? (
+                    <a href={`mailto:${user.email}`} className="user-email" title={user.email}>
+                      {user.email.slice(0, 22) + "..."}
+                    </a>
+                  ) : (
+                    <a href={`mailto:${user.email}`} className="user-email">
+                      {user.email}
+                    </a>
+                  )}
                   <p className="user-phone">{user.telefono || "8335895555"}</p>
                   
                   <button onClick={() => abrirModalPaciente(user)} className="ver-mas-btn">

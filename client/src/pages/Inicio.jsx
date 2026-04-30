@@ -9,7 +9,6 @@ function Inicio() {
         <>
         <div className="page-container">
             <NavBar />
-            <Nav />
             <div className="page-content">
                 <Hero />
             </div>
