@@ -79,18 +79,16 @@ function NavBar() {
 
         // Si está en el Dashboard o cualquier otra ruta privada, mostramos links por rol
         switch (usuario.rol) {
-            case 'admin':
-                return (
-                    <>
-                        <Link to="/gestion" className="nav-link" onClick={() => setMenuOpen(false)}>Gestión de usuarios</Link>
-                    </>
-                );
             case 'psicologo':
                 return (
                     <>
-                        <Link to="/pacientes" className="nav-link" onClick={() => setMenuOpen(false)}>Mis pacientes</Link>
-                        <Link to="/historial" className="nav-link" onClick={() => setMenuOpen(false)}>Mi Historial</Link>
-                        <Link to="/horarios" className="nav-link" onClick={() => setMenuOpen(false)}>Mis Horarios</Link>
+                        {location.pathname !== "/dashboard" && (
+                            <>
+                                <Link to="/pacientes" className="nav-link" onClick={() => setMenuOpen(false)}>Mis pacientes</Link>
+                                <Link to="/historial" className="nav-link" onClick={() => setMenuOpen(false)}>Mi Historial</Link>
+                                <Link to="/horarios" className="nav-link" onClick={() => setMenuOpen(false)}>Mis Horarios</Link>
+                            </>
+                        )}        
                     </>
                 );
             case 'paciente':
