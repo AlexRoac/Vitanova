@@ -96,8 +96,16 @@ function NavBar() {
             case 'paciente':
                 return (
                     <>
-                        <Link to="/agendar" className="nav-link" onClick={() => setMenuOpen(false)}>Agendar citas</Link>
-                        <Link to="/citas" className="nav-link" onClick={() => setMenuOpen(false)}>Mis citas</Link>
+                        {location.pathname !== "/dashboard" && (
+                            <>
+                                <Link to="/agendar" className="nav-link" onClick={() => setMenuOpen(false)}>
+                                    Agendar citas
+                                </Link>
+                                <Link to="/citas" className="nav-link" onClick={() => setMenuOpen(false)}>
+                                    Mis citas
+                                </Link>
+                            </>
+                        )}          
                     </>
                 );
             default:
