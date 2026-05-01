@@ -19,10 +19,15 @@ function FooterUser({ handleClick }) {
 
         <div className="fcontainer seccion-3">
           <h3>Acceso rápido</h3>
-          <p>Ir a tu panel principal</p>
-          <button className="footer-button" onClick={handleClick}>
-            Ir a mi dashboard
-          </button>
+          <a href="/inicio" className="footer-link">
+            Inicio
+          </a>
+          <a href="/inicio" className="footer-link">
+            Experiencia
+          </a>
+          <a href="/inicio" className="footer-link">
+            Terminos y condiciones
+          </a>
         </div>
 
       </div>
