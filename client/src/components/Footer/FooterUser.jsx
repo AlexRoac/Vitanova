@@ -22,10 +22,10 @@ function FooterUser({ handleClick }) {
           <a href="/inicio" className="footer-link">
             Inicio
           </a>
-          <a href="/inicio" className="footer-link">
+          <a href="/experiencia" className="footer-link">
             Experiencia
           </a>
-          <a href="/inicio" className="footer-link">
+          <a href="/terminos" className="footer-link">
             Terminos y condiciones
           </a>
         </div>
