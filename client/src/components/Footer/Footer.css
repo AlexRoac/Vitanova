@@ -7,6 +7,8 @@
   background-color: #202343;
   font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Línea decorativa superior */
@@ -21,13 +23,12 @@
 /* Cuerpo principal — 3 columnas en fila */
 .footer-container {
   display: flex;
-  flex-direction: row;        /* ← CLAVE: asegura fila horizontal */
+  justify-content: center;   /* centra todo */
   align-items: flex-start;
-  justify-content: space-between;
+  gap: 250px;                 /* reduce espacio */
   padding: 48px clamp(20px, 5vw, 60px) 36px;
-  gap: 40px;
-  width: 100%;
-  box-sizing: border-box;
+  max-width: 1200px;         
+  margin: 0 auto; 
 }
 
 /* Columna base */
@@ -70,6 +71,18 @@
   color: #8fa3b8;
   line-height: 1.65;
   margin: 0 0 12px 0;
+  text-decoration: none;
+}
+.footer-link {
+  font-size: 0.84rem;
+  color: #8fa3b8;
+  line-height: 1.65;
+  margin: 0 0 12px 0;
+  text-decoration: none;
+}
+.footer-link:hover{
+  color: #60A6BF;
+  cursor: pointer;
 }
 
 /* Lista de contacto */

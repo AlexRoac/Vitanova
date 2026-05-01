@@ -165,7 +165,7 @@
 }
 
 .mobile-menu.open {
-    display: flex;
+    display: none;
 }
 
 /* Botones dentro del menú móvil */
@@ -259,4 +259,9 @@
     #terms {
         font-size: 12px;
     }
+    .mobile-menu.open {
+    display: flex;
+}
+
+
 }

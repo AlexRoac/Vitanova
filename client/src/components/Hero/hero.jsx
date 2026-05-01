@@ -44,12 +44,25 @@ function Hero() {
             Da el primer paso hacia tu bienestar emocional.
             </p>
             <div className="hero-buttons">
-                {usuario ? (
-                    <a href="/agendar" className="btn-primary">Agendar cita</a>
-                ) : (
-                    <a href="/login" className="btn-primary">Agendar cita</a>
-                )}
-                <a href="/pagina-que-no-exister" className="btn-secondary">Ver servicios</a>
+            {usuario ? (
+                <button 
+                    onClick={() => {
+                        if (usuario.rol === "psicologo" || usuario.id_rol === 2) {
+                            navigate("/historial"); // vista del psicólogo
+                        } else {
+                            navigate("/agendar"); // paciente
+                        }
+                    }} 
+                    className="btn-primary"
+                >
+                    Agendar cita
+                </button>
+            ) : (
+                <button onClick={handleLogin} className="btn-primary">
+                    Agendar cita
+                </button>
+            )}
+            <a href="*" className="btn-secondary">Ver servicios</a>
             </div>
         </div>
         <div className="hero-image">
