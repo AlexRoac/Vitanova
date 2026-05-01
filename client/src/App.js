@@ -15,8 +15,10 @@ import DisponibilidadPage from './pages/Disponibilidad';
 import AgendarCita from './pages/AgendarCita';
 import MisCitas from './pages/MisCitas';
 import Historial from './pages/Historial';
+import TerminosPage from './pages/Terminos';
 
 import './App.css';
+import ExperienciaPage from './pages/Experiencia';
 
 function App() {
   // Leemos la variable de entorno
@@ -30,8 +32,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/inicio" element={<Inicio />} />
+          <Route path="/terminos" element={<TerminosPage />} />
+          <Route path="/experiencia" element={<ExperienciaPage />} />
           <Route path="*" element={<Error404 />} />
           <Route path="/completar-perfil" element={<CompletarPerfil />} />
+          
 
           <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
             <Route path="/dashboard" element={<Dashboard />} />

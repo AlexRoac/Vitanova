@@ -72,7 +72,7 @@ function NavBar() {
                 <>
                     <Link to="/" className="nav-link" onClick={() => setMenuOpen(false)}>Inicio</Link>
                     <Link to="/experiencia" className="nav-link" onClick={() => setMenuOpen(false)}>Experiencia</Link>
-                    <Link to="/terms" className="nav-link" onClick={() => setMenuOpen(false)}>Términos y condiciones</Link>
+                    <Link to="/terminos" className="nav-link" onClick={() => setMenuOpen(false)}>Términos y condiciones</Link>
                 </>
             );
         }
