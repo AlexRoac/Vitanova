@@ -59,7 +59,13 @@ function NavBar() {
                 setUsuario(null);
                 setMenuOpen(false);
                 navigate("/inicio");
-                Swal.fire('¡Hasta luego!', 'Has cerrado sesión exitosamente.', 'success');
+                Swal.fire({
+                    title: '¡Hasta luego!',
+                    text: 'Has cerrado sesión exitosamente.',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false, 
+                });
             }
         });
     };
@@ -79,18 +85,16 @@ function NavBar() {
 
         // Si está en el Dashboard o cualquier otra ruta privada, mostramos links por rol
         switch (usuario.rol) {
-            case 'admin':
-                return (
-                    <>
-                        <Link to="/gestion" className="nav-link" onClick={() => setMenuOpen(false)}>Gestión de usuarios</Link>
-                    </>
-                );
             case 'psicologo':
                 return (
                     <>
-                        <Link to="/pacientes" className="nav-link" onClick={() => setMenuOpen(false)}>Mis pacientes</Link>
-                        <Link to="/historial" className="nav-link" onClick={() => setMenuOpen(false)}>Mi Historial</Link>
-                        <Link to="/horarios" className="nav-link" onClick={() => setMenuOpen(false)}>Mis Horarios</Link>
+                        {location.pathname !== "/dashboard" && (
+                            <>
+                                <Link to="/pacientes" className="nav-link" onClick={() => setMenuOpen(false)}>Mis pacientes</Link>
+                                <Link to="/historial" className="nav-link" onClick={() => setMenuOpen(false)}>Mi Historial</Link>
+                                <Link to="/horarios" className="nav-link" onClick={() => setMenuOpen(false)}>Mis Horarios</Link>
+                            </>
+                        )}        
                     </>
                 );
             case 'paciente':
@@ -135,9 +139,25 @@ function NavBar() {
                     {usuario ? (
                         <>
                             {(usuario.rol === 'admin' || usuario.rol === 'psicologo' || usuario.rol === 'paciente') && (
-                                <button className="menu-btn" onClick={() => navigate("/dashboard")}>Dashboard</button>
+                                <>
+                                    {/* Solo se muestra si NO estamos en dashboard */}
+                                    {location.pathname !== "/dashboard" && (
+                                        <button className="menu-btn" onClick={() => navigate("/dashboard")}>
+                                            Dashboard
+                                        </button>
+                                    )}
+                                    
+                                    {/* Solo se muestra si SÍ estamos en dashboard */}
+                                    {location.pathname === "/dashboard" && (
+                                        <button className="menu-btn" onClick={() => navigate("/inicio")}>
+                                            Inicio
+                                        </button>
+                                    )}
+                                </>
                             )}
-                            <button className="menu-btn logout-btn" onClick={handleLogout}>Cerrar sesión</button>
+                            <button className="menu-btn logout-btn" onClick={handleLogout}>
+                                Cerrar sesión
+                            </button>
                         </>
                     ) : (
                         <>
