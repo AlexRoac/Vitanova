@@ -51,7 +51,8 @@ function NavBar() {
             confirmButtonColor: '#3a7d8c',
             cancelButtonColor: 'rgb(177, 78, 78)',
             confirmButtonText: 'Sí, cerrar sesión',
-            cancelButtonText: 'Cancelar'
+            cancelButtonText: 'Cancelar',
+            scrollbarPadding: false
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem("token");
@@ -65,6 +66,7 @@ function NavBar() {
                     icon: 'success',
                     timer: 1000,
                     showConfirmButton: false, 
+                    scrollbarPadding: false
                 });
             }
         });

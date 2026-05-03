@@ -145,7 +145,8 @@ function PacienteGestion() {
         icon: 'warning',
         title: 'Atención',
         text: 'La nota no puede estar vacía.',
-        confirmButtonColor: '#60A6BF'
+        confirmButtonColor: '#60A6BF',
+        scrollbarPadding: false
       });
       return;
     }
@@ -170,7 +171,8 @@ function PacienteGestion() {
           title: '¡Éxito!',
           text: '¡Nota guardada exitosamente!',
           timer: 2000,
-          showConfirmButton: false
+          showConfirmButton: false,
+          scrollbarPadding: false
         });
         setContenidoNota(""); 
         setVistaModal("detalle"); 
@@ -179,7 +181,8 @@ function PacienteGestion() {
           icon: 'error',
           title: 'Error',
           text: 'Hubo un error al guardar la nota.',
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#60A6BF',
+          scrollbarPadding: false
         });
       }
     } catch (error) {
@@ -188,7 +191,8 @@ function PacienteGestion() {
         icon: 'error',
         title: 'Error de red',
         text: 'Error de conexión con el servidor.',
-        confirmButtonColor: '#60A6BF'
+        confirmButtonColor: '#60A6BF',
+        scrollbarPadding: false
       });
     } finally {
       setGuardando(false);

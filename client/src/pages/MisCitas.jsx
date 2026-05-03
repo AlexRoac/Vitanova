@@ -43,7 +43,8 @@ const MisCitas = () => {
             confirmButtonColor: '#c0392b',
             cancelButtonColor: '#aab8c2',
             confirmButtonText: 'Sí, cancelar cita',
-            cancelButtonText: 'No, mantener'
+            cancelButtonText: 'No, mantener',
+            scrollbarPadding: false
         });
 
         if (!confirmacion.isConfirmed) return;
@@ -62,7 +63,8 @@ const MisCitas = () => {
                     confirmButtonColor: '#60A6BF',
                     confirmButtonText: 'Entendido',
                     timer: 4000,
-                    timerProgressBar: true
+                    timerProgressBar: true,
+                    scrollbarPadding: false
                 });
                 // Quita la cita del estado en lugar de recargar la página
                 setCitas(prev => prev.filter(c => c.id !== idCita));
@@ -72,7 +74,8 @@ const MisCitas = () => {
                     title: 'Error al cancelar',
                     text: 'No se pudo cancelar la cita. Intenta de nuevo.',
                     confirmButtonColor: '#60A6BF',
-                    confirmButtonText: 'Cerrar'
+                    confirmButtonText: 'Cerrar',
+                    scrollbarPadding: false
                 });
             }
         } catch (error) {
@@ -82,7 +85,8 @@ const MisCitas = () => {
                 title: 'Error de conexión',
                 text: 'No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.',
                 confirmButtonColor: '#60A6BF',
-                confirmButtonText: 'Cerrar'
+                confirmButtonText: 'Cerrar',
+                scrollbarPadding: false
             });
         }
     };

@@ -22,6 +22,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
         title: "Error de acceso",
         text: "Contraseña no coincide",
         confirmButtonColor: "#37b0d5",
+        scrollbarPadding: false
                     });
       return;
     }

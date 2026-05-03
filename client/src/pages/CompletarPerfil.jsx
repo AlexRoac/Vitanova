@@ -53,7 +53,8 @@ function CompletarPerfil() {
           icon: 'error',
           title: 'Error',
           text: data.msg || "Error al actualizar los datos",
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#60A6BF',
+          scrollbarPadding: false
         });
         return; // Cortamos la ejecución
       }
@@ -68,7 +69,8 @@ function CompletarPerfil() {
         title: '¡Éxito!',
         text: '¡Perfil completado con éxito!',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
+        scrollbarPadding: false
       });
       
       navigate("/dashboard");
@@ -80,7 +82,8 @@ function CompletarPerfil() {
         icon: 'error',
         title: 'Error de red',
         text: 'Error conectando al servidor',
-        confirmButtonColor: '#60A6BF'
+        confirmButtonColor: '#60A6BF',
+        scrollbarPadding: false
       });
     }
   };

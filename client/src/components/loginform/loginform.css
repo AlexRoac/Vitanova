@@ -120,6 +120,7 @@ h1{
 
 .password-container {
   position: relative;
+  margin-bottom: 10px;
 }
 
 .toggle-password {

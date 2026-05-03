@@ -1,0 +1,103 @@
+.cita-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    margin-bottom: 15px;
+    border-radius: 14px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+    border-left: 6px solid;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cita-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+}
+
+/* INFO */
+.cita-info h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+    color: #2c3e50;
+}
+
+.fecha {
+    margin: 0;
+    color: #7b8a9a;
+    text-transform: capitalize;
+}
+
+.hora {
+    margin-top: 5px;
+    font-weight: 600;
+    color: #34495e;
+}
+
+/* ACCIONES */
+.cita-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+/* BADGE BASE */
+.badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* BOTÓN */
+.btn-cancelar {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #f28b82;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #e57373;
+}
+
+/* =========================
+   ESTADOS (PASTEL UX)
+   ========================= */
+
+/* CONFIRMADA */
+.cita-card.confirmada {
+    border-color: #7ed6a5;
+}
+
+.badge.confirmada {
+    background-color: #e6f7ef;
+    color: #2e7d5b;
+}
+
+/* CANCELADA */
+.cita-card.cancelada {
+    border-color: #f5a3a3;
+}
+
+.badge.cancelada {
+    background-color: #fdeaea;
+    color: #a94442;
+}
+
+/* PENDIENTE */
+.cita-card.pendiente {
+    border-color: #f9d976;
+}
+
+.badge.pendiente {
+    background-color: #fff8e1;
+    color: #8a6d3b;
+}

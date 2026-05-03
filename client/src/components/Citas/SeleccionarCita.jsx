@@ -81,7 +81,8 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
                 icon: 'warning',
                 title: 'Sesión requerida',
                 text: 'Debes iniciar sesión como paciente para agendar una cita.',
-                confirmButtonColor: '#60A6BF'
+                confirmButtonColor: '#60A6BF',
+                scrollbarPadding: false
             });
             return;
         }
@@ -99,7 +100,8 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
             confirmButtonText: 'Sí, confirmar',
             confirmButtonColor: '#60A6BF',
             cancelButtonColor: '#aab8c2',
-            cancelButtonText: 'Cancelar'
+            cancelButtonText: 'Cancelar',
+            scrollbarPadding: false
         });
 
         if (!confirmacion.isConfirmed) return;
@@ -125,7 +127,8 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
                 Swal.fire({
                     icon: 'success',
                     title: '¡Cita confirmada!',
-                    timer: 3000
+                    timer: 3000,
+                    scrollbarPadding: false
                 });
             }
 

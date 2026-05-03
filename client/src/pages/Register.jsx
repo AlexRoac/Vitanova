@@ -53,6 +53,7 @@ function Register() {
           title: "Error al registrar",
           text: data.msg || "No se pudo completar el registro.",
           confirmButtonColor: "#37b0d5",
+          scrollbarPadding: false
         });
         return;
       }
@@ -64,6 +65,7 @@ function Register() {
         text: "Ahora puedes iniciar sesión con tu cuenta.",
         confirmButtonText: "Ir al Login",
         confirmButtonColor: "#37b0d5",
+        scrollbarPadding: false
       }).then((result) => {
         // Usamos navigate en lugar de window.location para mantener la fluidez de React
         navigate("/login");
@@ -75,6 +77,7 @@ function Register() {
         icon: "error",
         title: "Error de servidor",
         text: "Hubo un problema al conectar con el servidor.",
+        scrollbarPadding: false
       });
     }
   };
@@ -100,6 +103,7 @@ function Register() {
           text: "Hubo un error al intentar registrarse con Google.",
           icon: "error",
           confirmButtonColor: "#37b0d5",
+          scrollbarPadding: false
         });
       }
 
@@ -114,6 +118,7 @@ function Register() {
           text: "Tu cuenta se creó con Google, pero necesitamos unos datos extra.",
           confirmButtonText: "Completar Perfil",
           confirmButtonColor: "#37b0d5",
+          scrollbarPadding: false
         }).then(() => {
           navigate("/completar-perfil");
         });
@@ -123,6 +128,7 @@ function Register() {
           title: "¡Bienvenido!",
           timer: 1500,
           showConfirmButton: false,
+          scrollbarPadding: false
         }).then(() => {
           navigate("/dashboard");
         });
@@ -139,6 +145,7 @@ function Register() {
       text: "Falló la autenticación con Google. Intenta de nuevo.",
       icon: "error",
       confirmButtonColor: "#37b0d5",
+      scrollbarPadding: false
     });
   };
 

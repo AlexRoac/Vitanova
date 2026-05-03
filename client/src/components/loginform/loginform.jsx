@@ -60,10 +60,11 @@ function LoginForm({ correo, password, showPassword, setShowPassword, onCorreoCh
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
-
+          {/* 
           <label className="remember">
             <input type="checkbox" name="remember" /> Recordar contraseña
           </label>
+          */}
 
           <button type="submit" className="submit-btn">
             Acceder

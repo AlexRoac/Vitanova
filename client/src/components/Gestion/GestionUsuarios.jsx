@@ -53,7 +53,8 @@ function Gestion() {
           icon: 'error',
           title: 'Acción denegada',
           text: 'No puedes quitarle el rol al último Administrador del sistema.',
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#60A6BF',
+          scrollbarPadding: false
         });
         return; // Cortamos la ejecución
       }
@@ -96,7 +97,8 @@ function Gestion() {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#aab8c2',
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      scrollbarPadding: false
     });
     
     if (confirmacion.isConfirmed) {
@@ -124,14 +126,16 @@ function Gestion() {
             title: '¡Eliminado!',
             text: `El usuario ha sido eliminado correctamente.${textoCitas}`,
             timer: 3000,
-            showConfirmButton: false
+            showConfirmButton: false,
+            scrollbarPadding: false
           });
         } else {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Hubo un error al intentar eliminar el usuario.',
-            confirmButtonColor: '#60A6BF'
+            confirmButtonColor: '#60A6BF',
+            scrollbarPadding: false
           });
         }
       } catch (error) {
@@ -140,7 +144,8 @@ function Gestion() {
           icon: 'error',
           title: 'Error de red',
           text: 'No se pudo conectar con el servidor.',
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#60A6BF',
+          scrollbarPadding: false
         });
       }
     }
@@ -170,7 +175,8 @@ function Gestion() {
           icon: 'success',
           title: '¡Éxito!',
           text: `Los cambios han sido aplicados correctamente.${textoCitas}`,
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#60A6BF',
+          scrollbarPadding: false
         });
       } else {
         Swal.fire({
@@ -186,7 +192,8 @@ function Gestion() {
         icon: 'error',
         title: 'Error de red',
         text: 'No se pudo establecer conexión con el servidor.',
-        confirmButtonColor: '#60A6BF'
+        confirmButtonColor: '#60A6BF',
+        scrollbarPadding: false
       });
     }
   };

@@ -39,6 +39,7 @@ function Login() {
           title: "Error de acceso",
           text: data.msg || "Credenciales incorrectas, intenta de nuevo.",
           confirmButtonColor: "#37b0d5",
+          scrollbarPadding: false
         });
         return;
       }
@@ -54,6 +55,7 @@ function Login() {
         text: "Has iniciado sesión correctamente.",
         timer: 1500,
         showConfirmButton: false,
+        scrollbarPadding: false
       }).then(() => {
         navigate("/dashboard");
       });
@@ -65,6 +67,7 @@ function Login() {
         title: "Error de red",
         text: "No se pudo conectar con el servidor. Verifica tu conexión.",
         confirmButtonColor: "#37b0d5",
+        scrollbarPadding: false
       });
     }
   };
@@ -84,6 +87,7 @@ function Login() {
           icon: "error",
           title: "Error con Google",
           text: data.error || "No pudimos validar tu cuenta de Google.",
+          scrollbarPadding: false
         });
       }
 
@@ -97,6 +101,7 @@ function Login() {
           text: "Por favor completa tus datos para continuar.",
           confirmButtonText: "Ir a mi perfil",
           confirmButtonColor: "#37b0d5",
+          scrollbarPadding: false
         }).then(() => {
           navigate("/completar-perfil");
         });
@@ -106,6 +111,7 @@ function Login() {
           title: "Acceso correcto",
           timer: 1000,
           showConfirmButton: false,
+          scrollbarPadding: false
         }).then(() => {
           navigate("/dashboard");
         });

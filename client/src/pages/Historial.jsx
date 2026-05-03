@@ -42,7 +42,8 @@ const Historial = () => {
             confirmButtonColor: '#c0392b',
             cancelButtonColor: '#aab8c2',
             confirmButtonText: 'Sí, cancelar cita',
-            cancelButtonText: 'No, mantener'
+            cancelButtonText: 'No, mantener',
+            scrollbarPadding: false
         });
 
         if (!confirmacion.isConfirmed) return;
@@ -60,7 +61,8 @@ const Historial = () => {
                     confirmButtonColor: '#60A6BF',
                     confirmButtonText: 'Entendido',
                     timer: 4000,
-                    timerProgressBar: true
+                    timerProgressBar: true,
+                    scrollbarPadding: false
                 });
                 setCitas(prev => prev.filter(c => c.id !== idCita));
             } else {
@@ -69,7 +71,8 @@ const Historial = () => {
                     title: 'Error al cancelar',
                     text: 'No se pudo cancelar la cita. Intenta de nuevo.',
                     confirmButtonColor: '#60A6BF',
-                    confirmButtonText: 'Cerrar'
+                    confirmButtonText: 'Cerrar',
+                    scrollbarPadding: false
                 });
             }
         } catch (error) {
@@ -79,7 +82,8 @@ const Historial = () => {
                 title: 'Error de conexión',
                 text: 'No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.',
                 confirmButtonColor: '#60A6BF',
-                confirmButtonText: 'Cerrar'
+                confirmButtonText: 'Cerrar',
+                scrollbarPadding: false
             });
         }
     };
