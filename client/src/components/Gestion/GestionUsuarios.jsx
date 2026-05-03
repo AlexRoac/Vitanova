@@ -111,14 +111,19 @@ function Gestion() {
         });
 
         if (respuesta.ok) {
+          const datos = await respuesta.json();
           const listaActualizada = usuarios.filter(user => user.id !== idUsuario);
           setUsuarios(listaActualizada);
           
+          const textoCitas = datos.citasCanceladas > 0
+            ? ` Se cancelaron ${datos.citasCanceladas} cita(s) pendiente(s) y los pacientes fueron notificados.`
+            : '';
+
           Swal.fire({
             icon: 'success',
             title: '¡Eliminado!',
-            text: 'El usuario ha sido eliminado correctamente.',
-            timer: 2000,
+            text: `El usuario ha sido eliminado correctamente.${textoCitas}`,
+            timer: 3000,
             showConfirmButton: false
           });
         } else {
@@ -156,10 +161,15 @@ function Gestion() {
       });
 
       if (respuesta.ok) {
+        const datos = await respuesta.json();
+        const textoCitas = datos.citasCanceladas > 0
+          ? ` Se cancelaron ${datos.citasCanceladas} cita(s) de psicólogos que cambiaron de rol y los pacientes fueron notificados.`
+          : '';
+
         Swal.fire({
           icon: 'success',
           title: '¡Éxito!',
-          text: 'Los cambios han sido aplicados correctamente.',
+          text: `Los cambios han sido aplicados correctamente.${textoCitas}`,
           confirmButtonColor: '#60A6BF'
         });
       } else {
