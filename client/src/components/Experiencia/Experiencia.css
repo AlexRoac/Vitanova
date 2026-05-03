@@ -1,3 +1,7 @@
+p {
+  text-align: justify;
+}
+
 .experiencia-container {
     max-width: 1200px;
     margin: 40px auto;
