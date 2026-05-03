@@ -16,12 +16,11 @@ import AgendarCita from './pages/AgendarCita';
 import MisCitas from './pages/MisCitas';
 import Historial from './pages/Historial';
 import TerminosPage from './pages/Terminos';
-
 import './App.css';
 import ExperienciaPage from './pages/Experiencia';
+import PublicRoute from './components/ProtectedRoute/PublicRoute';
 
 function App() {
-  // Leemos la variable de entorno
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
   return (
@@ -29,14 +28,16 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to="/inicio" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/inicio" element={<Inicio />} />
           <Route path="/terminos" element={<TerminosPage />} />
           <Route path="/experiencia" element={<ExperienciaPage />} />
           <Route path="*" element={<Error404 />} />
-          <Route path="/completar-perfil" element={<CompletarPerfil />} />
-          
+
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/completar-perfil" element={<CompletarPerfil />} />
+          </Route>
 
           <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -56,6 +57,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="/gestion" element={<Gestion />} />
           </Route>
+
         </Routes>
       </Router>
     </GoogleOAuthProvider>
