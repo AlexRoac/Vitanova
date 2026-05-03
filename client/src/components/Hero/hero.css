@@ -16,10 +16,12 @@
 
 .hero-text {
   max-width: 520px;
+  text-align: center;
 }
 
 .hero-tag {
-  
+  display: inline-block;
+  margin: 0 auto;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 14px;
@@ -41,6 +43,7 @@
 .hero-buttons {
   display: flex;
   gap: 15px;
+  justify-content: center;
 }
 
 .btn-primary {
