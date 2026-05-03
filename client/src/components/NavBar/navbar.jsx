@@ -73,7 +73,7 @@ function NavBar() {
     // 2. Lógica para renderizar los links según el rol y la ubicación
     const renderLinks = () => {
         // Si el usuario no está logueado O si está en la página de inicio, mostramos el menú estándar
-        if (!usuario || location.pathname === "/inicio" || location.pathname === "/") {
+        if (!usuario || location.pathname === "/inicio" || location.pathname === "/" || location.pathname === "/terminos" || location.pathname === "/experiencia") {
             return (
                 <>
                     <Link to="/" className="nav-link" onClick={() => setMenuOpen(false)}>Inicio</Link>

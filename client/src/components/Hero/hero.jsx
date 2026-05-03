@@ -62,7 +62,7 @@ function Hero() {
                     Agendar cita
                 </button>
             )}
-            <a href="*" className="btn-secondary">Ver servicios</a>
+            <a href="/dashboard" className="btn-secondary">Ver servicios</a>
             </div>
         </div>
         <div className="hero-image">
