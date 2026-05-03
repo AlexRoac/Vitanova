@@ -38,7 +38,7 @@ function Login() {
           icon: "error",
           title: "Error de acceso",
           text: data.msg || "Credenciales incorrectas, intenta de nuevo.",
-          confirmButtonColor: "#37b0d5",
+          confirmButtonColor: "#3a7d8c",
           scrollbarPadding: false
         });
         return;
@@ -66,7 +66,7 @@ function Login() {
         icon: "error",
         title: "Error de red",
         text: "No se pudo conectar con el servidor. Verifica tu conexión.",
-        confirmButtonColor: "#37b0d5",
+        confirmButtonColor: "#3a7d8c",
         scrollbarPadding: false
       });
     }
@@ -100,7 +100,7 @@ function Login() {
           title: `¡Hola ${data.user.nombre}!`,
           text: "Por favor completa tus datos para continuar.",
           confirmButtonText: "Ir a mi perfil",
-          confirmButtonColor: "#37b0d5",
+          confirmButtonColor: "#3a7d8c",
           scrollbarPadding: false
         }).then(() => {
           navigate("/completar-perfil");

@@ -52,7 +52,7 @@ function Register() {
           icon: "error",
           title: "Error al registrar",
           text: data.msg || "No se pudo completar el registro.",
-          confirmButtonColor: "#37b0d5",
+          confirmButtonColor: "#3a7d8c",
           scrollbarPadding: false
         });
         return;
@@ -64,7 +64,7 @@ function Register() {
         title: "¡Registro exitoso!",
         text: "Ahora puedes iniciar sesión con tu cuenta.",
         confirmButtonText: "Ir al Login",
-        confirmButtonColor: "#37b0d5",
+        confirmButtonColor: "#3a7d8c",
         scrollbarPadding: false
       }).then((result) => {
         // Usamos navigate en lugar de window.location para mantener la fluidez de React
@@ -77,6 +77,7 @@ function Register() {
         icon: "error",
         title: "Error de servidor",
         text: "Hubo un problema al conectar con el servidor.",
+        confirmButtonColor: "#3a7d8c",
         scrollbarPadding: false
       });
     }
@@ -102,7 +103,7 @@ function Register() {
           title: "Error",
           text: "Hubo un error al intentar registrarse con Google.",
           icon: "error",
-          confirmButtonColor: "#37b0d5",
+          confirmButtonColor: "#3a7d8c",
           scrollbarPadding: false
         });
       }
@@ -117,7 +118,7 @@ function Register() {
           title: "¡Bienvenido!",
           text: "Tu cuenta se creó con Google, pero necesitamos unos datos extra.",
           confirmButtonText: "Completar Perfil",
-          confirmButtonColor: "#37b0d5",
+          confirmButtonColor: "#3a7d8c",
           scrollbarPadding: false
         }).then(() => {
           navigate("/completar-perfil");
@@ -144,7 +145,7 @@ function Register() {
       title: "Error",
       text: "Falló la autenticación con Google. Intenta de nuevo.",
       icon: "error",
-      confirmButtonColor: "#37b0d5",
+      confirmButtonColor: "#3a7d8c",
       scrollbarPadding: false
     });
   };

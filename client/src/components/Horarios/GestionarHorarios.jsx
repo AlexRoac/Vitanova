@@ -52,7 +52,7 @@ const GestionarHorarios = () => {
                 icon: 'warning',
                 title: 'Sesión no encontrada',
                 text: 'No se detectó tu sesión. Por favor inicia sesión nuevamente.',
-                confirmButtonColor: '#60A6BF',
+                confirmButtonColor: '#3a7d8c',
                 confirmButtonText: 'Entendido'
             });
             return;
@@ -70,7 +70,7 @@ const GestionarHorarios = () => {
             `,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#60A6BF',
+            confirmButtonColor: '#3a7d8c',
             cancelButtonColor: 'rgb(177, 78, 78)',
             confirmButtonText: 'Sí, guardar',
             cancelButtonText: 'Cancelar'
@@ -101,7 +101,7 @@ const GestionarHorarios = () => {
                             ha sido actualizada con éxito.
                         </p>
                     `,
-                    confirmButtonColor: '#60A6BF',
+                    confirmButtonColor: '#3a7d8c',
                     confirmButtonText: '¡Listo!',
                     timer: 4000,
                     timerProgressBar: true
@@ -111,7 +111,7 @@ const GestionarHorarios = () => {
                     icon: 'error',
                     title: 'Error al guardar',
                     text: 'No se pudieron guardar los horarios. Intenta de nuevo.',
-                    confirmButtonColor: '#60A6BF',
+                    confirmButtonColor: '#3a7d8c',
                     confirmButtonText: 'Intentar de nuevo'
                 });
             }
@@ -120,7 +120,7 @@ const GestionarHorarios = () => {
                 icon: 'error',
                 title: 'Error de conexión',
                 text: 'No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.',
-                confirmButtonColor: '#60A6BF',
+                confirmButtonColor: '#3a7d8c',
                 confirmButtonText: 'Cerrar'
             });
         }

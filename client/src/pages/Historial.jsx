@@ -39,8 +39,8 @@ const Historial = () => {
             `,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#c0392b',
-            cancelButtonColor: '#aab8c2',
+            confirmButtonColor: 'rgb(177, 78, 78)',
+            cancelButtonColor: '#3a7d8c',
             confirmButtonText: 'Sí, cancelar cita',
             cancelButtonText: 'No, mantener',
             scrollbarPadding: false
@@ -58,7 +58,7 @@ const Historial = () => {
                     icon: 'success',
                     title: 'Cita cancelada',
                     text: 'La cita ha sido cancelada y el horario fue liberado.',
-                    confirmButtonColor: '#60A6BF',
+                    confirmButtonColor: '#3a7d8c',
                     confirmButtonText: 'Entendido',
                     timer: 4000,
                     timerProgressBar: true,
@@ -70,7 +70,7 @@ const Historial = () => {
                     icon: 'error',
                     title: 'Error al cancelar',
                     text: 'No se pudo cancelar la cita. Intenta de nuevo.',
-                    confirmButtonColor: '#60A6BF',
+                    confirmButtonColor: '#3a7d8c',
                     confirmButtonText: 'Cerrar',
                     scrollbarPadding: false
                 });
@@ -81,7 +81,7 @@ const Historial = () => {
                 icon: 'error',
                 title: 'Error de conexión',
                 text: 'No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.',
-                confirmButtonColor: '#60A6BF',
+                confirmButtonColor: '#3a7d8c',
                 confirmButtonText: 'Cerrar',
                 scrollbarPadding: false
             });

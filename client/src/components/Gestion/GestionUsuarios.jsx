@@ -53,7 +53,7 @@ function Gestion() {
           icon: 'error',
           title: 'Acción denegada',
           text: 'No puedes quitarle el rol al último Administrador del sistema.',
-          confirmButtonColor: '#60A6BF',
+          confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
         return; // Cortamos la ejecución
@@ -82,7 +82,7 @@ function Gestion() {
           icon: 'error',
           title: 'Acción denegada',
           text: 'No puedes eliminar al último Administrador del sistema.',
-          confirmButtonColor: '#60A6BF',
+          confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
         return; // Cortamos la ejecución
@@ -95,8 +95,8 @@ function Gestion() {
       text: "No podrás revertir esto. Se eliminará permanentemente al usuario.",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#aab8c2',
+      confirmButtonColor: 'rgb(177, 78, 78)',
+      cancelButtonColor: '#3a7d8c',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
       scrollbarPadding: false
@@ -145,7 +145,7 @@ function Gestion() {
           icon: 'error',
           title: 'Error de red',
           text: 'No se pudo conectar con el servidor.',
-          confirmButtonColor: '#60A6BF',
+          confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
       }
@@ -176,7 +176,7 @@ function Gestion() {
           icon: 'success',
           title: '¡Éxito!',
           text: `Los cambios han sido aplicados correctamente.${textoCitas}`,
-          confirmButtonColor: '#60A6BF',
+          confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
       } else {
@@ -184,7 +184,7 @@ function Gestion() {
           icon: 'error',
           title: 'Error',
           text: 'Hubo un problema al guardar los cambios en la base de datos.',
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#3a7d8c'
         });
       }
     } catch (error) {
@@ -193,7 +193,7 @@ function Gestion() {
         icon: 'error',
         title: 'Error de red',
         text: 'No se pudo establecer conexión con el servidor.',
-        confirmButtonColor: '#60A6BF',
+        confirmButtonColor: '#3a7d8c',
         scrollbarPadding: false
       });
     }

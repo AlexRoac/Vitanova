@@ -98,8 +98,8 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Sí, confirmar',
-            confirmButtonColor: '#60A6BF',
-            cancelButtonColor: '#aab8c2',
+            confirmButtonColor: '#3a7d8c',
+            cancelButtonColor: 'rgb(177, 78, 78)',
             cancelButtonText: 'Cancelar',
             scrollbarPadding: false
         });
@@ -127,6 +127,7 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
                 Swal.fire({
                     icon: 'success',
                     title: '¡Cita confirmada!',
+                    confirmButtonColor: '#3a7d8c',
                     timer: 3000,
                     scrollbarPadding: false
                 });

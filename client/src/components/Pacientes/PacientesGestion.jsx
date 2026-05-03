@@ -145,7 +145,7 @@ function PacienteGestion() {
         icon: 'warning',
         title: 'Atención',
         text: 'La nota no puede estar vacía.',
-        confirmButtonColor: '#60A6BF',
+        confirmButtonColor: '#3a7d8c',
         scrollbarPadding: false
       });
       return;
@@ -181,7 +181,7 @@ function PacienteGestion() {
           icon: 'error',
           title: 'Error',
           text: 'Hubo un error al guardar la nota.',
-          confirmButtonColor: '#60A6BF',
+          confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
       }
@@ -191,7 +191,7 @@ function PacienteGestion() {
         icon: 'error',
         title: 'Error de red',
         text: 'Error de conexión con el servidor.',
-        confirmButtonColor: '#60A6BF',
+        confirmButtonColor: '#3a7d8c',
         scrollbarPadding: false
       });
     } finally {
