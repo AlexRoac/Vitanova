@@ -82,7 +82,8 @@ function Gestion() {
           icon: 'error',
           title: 'Acción denegada',
           text: 'No puedes eliminar al último Administrador del sistema.',
-          confirmButtonColor: '#60A6BF'
+          confirmButtonColor: '#60A6BF',
+          scrollbarPadding: false
         });
         return; // Cortamos la ejecución
       }
