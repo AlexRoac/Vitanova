@@ -516,17 +516,17 @@ const AutomatizarHorarios = () => {
                             <div className="resumen-card">
                                 <span className="resumen-icon">📅</span>
                                 <span className="resumen-val">{fechasFinales.length}</span>
-                                <span className="resumen-lbl">Días a configurar</span>
+                                <span className="resumen-lbl">Días</span>
                             </div>
                             <div className="resumen-card">
                                 <span className="resumen-icon">⏰</span>
                                 <span className="resumen-val">{totalHoras}</span>
-                                <span className="resumen-lbl">Horas disponibles</span>
+                                <span className="resumen-lbl">Horas</span>
                             </div>
                             <div className="resumen-card">
                                 <span className="resumen-icon">🚫</span>
                                 <span className="resumen-val">{excepciones.length}</span>
-                                <span className="resumen-lbl">Días excluidos</span>
+                                <span className="resumen-lbl">Excluidos</span>
                             </div>
                         </div>
 
