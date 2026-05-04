@@ -95,6 +95,7 @@ function NavBar() {
                                 <Link to="/pacientes" className="nav-link" onClick={() => setMenuOpen(false)}>Mis pacientes</Link>
                                 <Link to="/historial" className="nav-link" onClick={() => setMenuOpen(false)}>Mi Historial</Link>
                                 <Link to="/horarios" className="nav-link" onClick={() => setMenuOpen(false)}>Mis Horarios</Link>
+                                <Link to="/automatizar-horarios" className="nav-link" onClick={() => setMenuOpen(false)}>Automatizar Horarios</Link>
                             </>
                         )}        
                     </>

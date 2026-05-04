@@ -19,6 +19,7 @@ import TerminosPage from './pages/Terminos';
 import './App.css';
 import ExperienciaPage from './pages/Experiencia';
 import PublicRoute from './components/ProtectedRoute/PublicRoute';
+import AutomatizarPage from './pages/AutomatizarPage';
 
 function App() {
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -51,6 +52,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['psicologo']} />}>
             <Route path="/pacientes" element={<PacientesGestion />} />
             <Route path="/horarios" element={<DisponibilidadPage />} />
+            <Route path="/automatizar-horarios" element={<AutomatizarPage />} />
             <Route path="/historial" element={<Historial />} />
           </Route>
           

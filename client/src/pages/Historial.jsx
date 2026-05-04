@@ -92,7 +92,9 @@ const Historial = () => {
         <div style={{ backgroundColor: '#f4f7f6', minHeight: '100vh' }} className="page-container">
             <NavBar />
             <main style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }} className="page-content">
-                <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>Mis Citas</h1>
+                <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>
+                    {usuario?.rol === 'psicologo' ? 'Citas de mis Pacientes' : 'Mis Citas'}
+                </h1>
 
                 {loading ? (
                     <p>Cargando tus citas...</p>
@@ -106,10 +108,24 @@ const Historial = () => {
                     ))
                 ) : (
                     <div style={{ textAlign: 'center', padding: '50px', background: '#fff', borderRadius: '15px' }}>
-                        <p style={{ color: '#7f8c8d' }}>No tienes citas programadas actualmente.</p>
-                        <a href="/agendar" style={{ color: '#3498db', fontWeight: 'bold', textDecoration: 'none' }}>
-                            Agendar mi primera cita
-                        </a>
+                        {usuario?.rol === 'psicologo' ? (
+                            <>
+                                <p style={{ fontSize: '2.5rem', marginBottom: '10px' }}>📋</p>
+                                <p style={{ color: '#2c3e50', fontWeight: '600', fontSize: '1.1rem', marginBottom: '8px' }}>
+                                    Aún no tienes citas agendadas
+                                </p>
+                                <p style={{ color: '#7f8c8d', fontSize: '0.92rem' }}>
+                                    Cuando un paciente agende una sesión contigo, aparecerá aquí.
+                                </p>
+                            </>
+                        ) : (
+                            <>
+                                <p style={{ color: '#7f8c8d' }}>No tienes citas programadas actualmente.</p>
+                                <a href="/agendar" style={{ color: '#3498db', fontWeight: 'bold', textDecoration: 'none' }}>
+                                    Agendar mi primera cita
+                                </a>
+                            </>
+                        )}
                     </div>
                 )}
             </main>

@@ -370,9 +370,25 @@
   to { transform: rotate(360deg); }
 }
 
-/* =====================
-   SELECTOR PSICÓLOGO
-   ===================== */
+.btn-automatizar-link {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #60A6BF;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1.5px dashed #b0d4e0;
+  background: rgba(96, 166, 191, 0.04);
+  transition: all 0.18s;
+  letter-spacing: 0.2px;
+}
+
+.btn-automatizar-link:hover {
+  background: rgba(96, 166, 191, 0.1);
+  border-color: #60A6BF;
+  color: #202343;
+}
 
 .selector-psicologo-wrapper {
   width: 100%;

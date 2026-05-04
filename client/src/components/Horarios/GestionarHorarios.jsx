@@ -194,6 +194,9 @@ const GestionarHorarios = () => {
                 <button className="btn-guardar" onClick={guardarHorarios}>
                     Guardar Horarios
                 </button>
+                <a href="/automatizar-horarios" className="btn-automatizar-link">
+                    ⚡ Configurar horarios automáticamente
+                </a>
             </div>
 
         </div>
