@@ -7,7 +7,11 @@ const SelectorPsicologo = ({ alSeleccionar }) => {
     useEffect(() => {
         const cargarData = async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/psicologos`);
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/psicologos`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}` // ✅ Token agregado
+                    }
+                });
                 if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
                 const data = await res.json();
                 setPsicologos(data);

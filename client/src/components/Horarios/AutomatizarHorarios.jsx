@@ -32,7 +32,6 @@ const formatFecha = (isoStr) => {
     return fecha.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' });
 };
 
-// Genera todas las fechas en rango que caigan en los días seleccionados, sin excepciones
 const generarFechas = (desde, hasta, diasSemana, excepciones) => {
     if (!desde || !hasta || diasSemana.length === 0) return [];
     const resultado = [];
@@ -49,7 +48,6 @@ const generarFechas = (desde, hasta, diasSemana, excepciones) => {
     return resultado;
 };
 
-// Genera horas entre horaInicio y horaFin (inclusive ambas)
 const generarHorasRango = (desde, hasta) => {
     const idxDesde = HORAS_DISPONIBLES.indexOf(desde);
     const idxHasta = HORAS_DISPONIBLES.indexOf(hasta);
@@ -57,7 +55,6 @@ const generarHorasRango = (desde, hasta) => {
     return HORAS_DISPONIBLES.slice(idxDesde, idxHasta + 1);
 };
 
-// Mini calendario para excepciones
 const MiniCalendario = ({ desde, hasta, excepciones, onToggle, diasSemana }) => {
     const [mesActual, setMesActual] = useState(() => {
         if (desde) {
@@ -150,19 +147,22 @@ const AutomatizarHorarios = () => {
     const [paso, setPaso] = useState(0);
     const [guardando, setGuardando] = useState(false);
 
-    // Paso 1 — Plantilla
     const [diasSeleccionados, setDiasSeleccionados] = useState([1, 2, 3, 4, 5]);
     const [horaInicio, setHoraInicio] = useState('09:00');
     const [horaFin, setHoraFin] = useState('17:00');
     const [horasCustomPorDia, setHorasCustomPorDia] = useState(false);
     const [horasPorDia, setHorasPorDia] = useState({});
 
-    // Paso 2 — Rango de fechas
     const [fechaDesde, setFechaDesde] = useState('');
     const [fechaHasta, setFechaHasta] = useState('');
 
-    // Paso 3 — Excepciones
     const [excepciones, setExcepciones] = useState([]);
+
+    // ✅ Helper centralizado para headers con token
+    const getAuthHeaders = () => ({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    });
 
     const toggleDia = (key) => {
         setDiasSeleccionados(prev =>
@@ -177,7 +177,6 @@ const AutomatizarHorarios = () => {
     };
 
     const horasGeneradas = useMemo(() => generarHorasRango(horaInicio, horaFin), [horaInicio, horaFin]);
-
 
     const fechasFinales = useMemo(() => {
         if (!fechaDesde || !fechaHasta) return [];
@@ -201,7 +200,6 @@ const AutomatizarHorarios = () => {
         if (!psicologoId) return;
         setGuardando(true);
 
-        // Días activos con sus horas
         const diasActivos = fechasFinales.map(iso => {
             let horas;
             if (horasCustomPorDia) {
@@ -213,7 +211,6 @@ const AutomatizarHorarios = () => {
             return { fecha: iso, horas };
         });
 
-        // Días excluidos dentro del rango: se envían con horas vacías para limpiarlos
         const diasExcluidos = excepciones
             .filter(iso => iso >= fechaDesde && iso <= fechaHasta)
             .map(iso => ({ fecha: iso, horas: [] }));
@@ -222,10 +219,12 @@ const AutomatizarHorarios = () => {
 
         try {
             let errores = 0;
+            // ✅ Token obtenido una sola vez antes del loop
+            const headers = getAuthHeaders();
             for (const item of payload) {
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/configurar`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers, // ✅ Token agregado
                     body: JSON.stringify({ psicologoId, fecha: item.fecha, horas: item.horas })
                 });
                 if (!res.ok) errores++;
@@ -247,7 +246,6 @@ const AutomatizarHorarios = () => {
                     timerProgressBar: true,
                     scrollbarPadding: false
                 });
-                // Reset
                 setPaso(0);
                 setDiasSeleccionados([1, 2, 3, 4, 5]);
                 setHoraInicio('09:00');
@@ -278,7 +276,6 @@ const AutomatizarHorarios = () => {
 
     return (
         <div className="auto-container">
-            {/* Header */}
             <div className="auto-header">
                 <h2>Automatizar Horarios</h2>
                 <p className="auto-subheader">
@@ -287,7 +284,6 @@ const AutomatizarHorarios = () => {
                 <div className="auto-divider" />
             </div>
 
-            {/* Stepper */}
             <div className="auto-stepper">
                 {PASOS.map((nombre, i) => (
                     <React.Fragment key={i}>
@@ -304,10 +300,8 @@ const AutomatizarHorarios = () => {
                 ))}
             </div>
 
-            {/* Contenido por paso */}
             <div className="auto-body">
 
-                {/* PASO 0 — Plantilla semanal */}
                 {paso === 0 && (
                     <div className="auto-paso">
                         <h3 className="auto-paso-titulo">¿Qué días y horario trabajas?</h3>
@@ -409,7 +403,6 @@ const AutomatizarHorarios = () => {
                     </div>
                 )}
 
-                {/* PASO 1 — Rango de fechas */}
                 {paso === 1 && (
                     <div className="auto-paso">
                         <h3 className="auto-paso-titulo">¿A qué período aplica?</h3>
@@ -470,7 +463,6 @@ const AutomatizarHorarios = () => {
                     </div>
                 )}
 
-                {/* PASO 2 — Excepciones */}
                 {paso === 2 && (
                     <div className="auto-paso">
                         <h3 className="auto-paso-titulo">¿Hay días que excluir?</h3>
@@ -506,7 +498,6 @@ const AutomatizarHorarios = () => {
                     </div>
                 )}
 
-                {/* PASO 3 — Confirmación */}
                 {paso === 3 && (
                     <div className="auto-paso">
                         <h3 className="auto-paso-titulo">Resumen de tu configuración</h3>
@@ -556,7 +547,6 @@ const AutomatizarHorarios = () => {
                 )}
             </div>
 
-            {/* Navegación */}
             <div className="auto-nav">
                 {paso > 0 && (
                     <button className="auto-btn-sec" onClick={() => setPaso(p => p - 1)} disabled={guardando}>

@@ -14,6 +14,12 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
     const pacienteStorage = localStorage.getItem('usuario');
     const paciente = pacienteStorage ? JSON.parse(pacienteStorage) : null;
 
+    // ✅ Helper para obtener headers con token
+    const getAuthHeaders = () => ({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    });
+
     // ✅ FORMATEO LOCAL (SOLUCIONA BUG DE FECHAS)
     const formatearFechaLocal = (date) => {
         const year = date.getFullYear();
@@ -32,7 +38,9 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
             if (!psicologoId) return;
 
             try {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/fechas/${psicologoId}`);
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/fechas/${psicologoId}`, {
+                    headers: getAuthHeaders() // ✅ Token agregado
+                });
                 if (res.ok) {
                     const data = await res.json();
                     setFechasDisponibles(data);
@@ -53,7 +61,9 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
             const fechaISO = formatearFechaLocal(fecha);
 
             try {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/${psicologoId}/${fechaISO}`);
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/${psicologoId}/${fechaISO}`, {
+                    headers: getAuthHeaders() // ✅ Token agregado
+                });
                 if (res.ok) {
                     const data = await res.json();
                     setHorasDisponibles(data);
@@ -111,7 +121,7 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/reservar`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(), // ✅ Token agregado (reemplaza el Content-Type anterior)
                 body: JSON.stringify({
                     pacienteId: paciente.id,
                     psicologoId,

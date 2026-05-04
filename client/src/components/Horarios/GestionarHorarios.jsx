@@ -12,6 +12,12 @@ const GestionarHorarios = () => {
     const user = userStorage ? JSON.parse(userStorage) : null;
     const psicologoId = user ? user.id : null;
 
+    // ✅ Helper centralizado para headers con token
+    const getAuthHeaders = () => ({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    });
+
     const horasDelDia = [
         "07:00", "08:00", "09:00", "10:00", "11:00",
         "12:00", "13:00", "14:00", "15:00", "16:00",
@@ -27,7 +33,9 @@ const GestionarHorarios = () => {
             if (!psicologoId) return;
             const fechaISO = fecha.toISOString().split('T')[0];
             try {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/${psicologoId}/${fechaISO}`);
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/${psicologoId}/${fechaISO}`, {
+                    headers: getAuthHeaders() // ✅ Token agregado
+                });
                 if (res.ok) {
                     const horasGuardadas = await res.json();
                     setHorasSeleccionadas(horasGuardadas);
@@ -59,7 +67,6 @@ const GestionarHorarios = () => {
             return;
         }
 
-        // Alerta de confirmación antes de guardar
         const confirmacion = await Swal.fire({
             title: '¿Guardar horarios?',
             html: `
@@ -83,7 +90,7 @@ const GestionarHorarios = () => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/configurar`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(), // ✅ Token agregado
                 body: JSON.stringify({
                     psicologoId,
                     fecha: fechaISO,

@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db'); 
-const transporter = require('../utils/mailer'); // Importamos el configurador de correos
+const pool = require('../db');
+const transporter = require('../utils/mailer');
+const { verificarToken, verificarRol } = require('../middlewares/auth'); // ✅ Middleware JWT
 
-// 1. OBTENER HORARIOS DISPONIBLES
-router.get('/:psicologoId/:fecha', async (req, res) => {
+// 1. OBTENER HORARIOS DISPONIBLES ✅ Cualquier usuario autenticado
+router.get('/:psicologoId/:fecha', verificarToken, async (req, res) => {
     const { psicologoId, fecha } = req.params;
     try {
         const result = await pool.query(
             "SELECT hora_inicio FROM disponibilidad WHERE psicologo_id = $1 AND fecha = $2 AND ocupado = FALSE ORDER BY hora_inicio ASC",
             [psicologoId, fecha]
         );
-        
         const horas = result.rows.map(row => row.hora_inicio.slice(0, 5));
         res.json(horas);
     } catch (err) {
@@ -20,9 +20,9 @@ router.get('/:psicologoId/:fecha', async (req, res) => {
     }
 });
 
-// 2. GUARDAR O EDITAR HORARIOS (Vista Psicólogo)
-router.post('/configurar', async (req, res) => {
-    const { psicologoId, fecha, horas } = req.body; 
+// 2. GUARDAR O EDITAR HORARIOS ✅ Solo psicólogos
+router.post('/configurar', verificarToken, verificarRol('psicologo', 'admin'), async (req, res) => {
+    const { psicologoId, fecha, horas } = req.body;
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
@@ -50,21 +50,19 @@ router.post('/configurar', async (req, res) => {
     }
 });
 
-// 3. RESERVAR CITA + ENVÍO DE EMAILS (Vista Paciente)
-router.post('/reservar', async (req, res) => {
+// 3. RESERVAR CITA ✅ Solo pacientes autenticados
+router.post('/reservar', verificarToken, verificarRol('paciente', 'admin'), async (req, res) => {
     const { pacienteId, psicologoId, fecha, hora } = req.body;
     const client = await pool.connect();
 
     try {
         await client.query('BEGIN');
 
-        // A. Insertamos la cita en la tabla 'citas'
         await client.query(
             "INSERT INTO citas (paciente_id, psicologo_id, fecha, hora, estado) VALUES ($1, $2, $3, $4, 'confirmada')",
             [pacienteId, psicologoId, fecha, hora]
         );
 
-        // B. Marcamos el horario como ocupado
         const updateResult = await client.query(
             "UPDATE disponibilidad SET ocupado = TRUE WHERE psicologo_id = $1 AND fecha = $2 AND hora_inicio = $3",
             [psicologoId, fecha, hora]
@@ -74,8 +72,6 @@ router.post('/reservar', async (req, res) => {
             throw new Error("El horario ya no está disponible");
         }
 
-        // C. OBTENER INFORMACIÓN PARA EL CORREO
-        // Buscamos los emails de ambos y el nombre del psicólogo
         const infoQuery = await client.query(
             `SELECT 
                 (SELECT email FROM usuarios WHERE id_usuario = $1) AS email_paciente,
@@ -89,10 +85,9 @@ router.post('/reservar', async (req, res) => {
 
         await client.query('COMMIT');
 
-        // D. LÓGICA DE ENVÍO DE CORREO
         const mailOptions = {
             from: `"Vitanova Psicología" <${process.env.EMAIL_USER}>`,
-            to: `${email_paciente}, ${email_psicologo}`, // Se envía a ambos
+            to: `${email_paciente}, ${email_psicologo}`,
             subject: "🗓️ Confirmación de Cita - Vitanova",
             html: `
                 <div style="font-family: Arial, sans-serif; color: #333;">
@@ -109,7 +104,6 @@ router.post('/reservar', async (req, res) => {
             `
         };
 
-        // Enviamos el correo de forma asíncrona (no bloquea la respuesta al usuario)
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) console.error("Error al enviar email:", error);
             else console.log("Emails enviados correctamente:", info.response);
@@ -125,6 +119,5 @@ router.post('/reservar', async (req, res) => {
         client.release();
     }
 });
-
 
 module.exports = router;

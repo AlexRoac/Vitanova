@@ -9,12 +9,20 @@ const MisCitas = () => {
     const [loading, setLoading] = useState(true);
     const usuario = JSON.parse(localStorage.getItem('usuario'));
 
+    // ✅ Helper para obtener headers con token
+    const getAuthHeaders = () => ({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    });
+
     useEffect(() => {
         if (!usuario?.id) return;
 
         const cargarCitas = async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/paciente/${usuario.id}`);
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/paciente/${usuario.id}`, {
+                    headers: getAuthHeaders() // ✅ Token agregado
+                });
                 const data = await res.json();
                 if (res.ok) {
                     setCitas(data);
@@ -51,7 +59,8 @@ const MisCitas = () => {
 
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/cancelar/${idCita}`, {
-                method: 'PUT'
+                method: 'PUT',
+                headers: getAuthHeaders() // ✅ Token agregado
             });
 
             if (res.ok) {
