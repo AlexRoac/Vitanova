@@ -14,13 +14,11 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
     const pacienteStorage = localStorage.getItem('usuario');
     const paciente = pacienteStorage ? JSON.parse(pacienteStorage) : null;
 
-    // ✅ Helper para obtener headers con token
     const getAuthHeaders = () => ({
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'
     });
 
-    // ✅ FORMATEO LOCAL (SOLUCIONA BUG DE FECHAS)
     const formatearFechaLocal = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -32,14 +30,13 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
         weekday: 'long', day: 'numeric', month: 'long'
     });
 
-    // 🔥 CARGAR FECHAS DISPONIBLES (para pintar calendario)
     useEffect(() => {
         const cargarFechas = async () => {
             if (!psicologoId) return;
 
             try {
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/citas/fechas/${psicologoId}`, {
-                    headers: getAuthHeaders() // ✅ Token agregado
+                    headers: getAuthHeaders()
                 });
                 if (res.ok) {
                     const data = await res.json();
@@ -62,7 +59,7 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
 
             try {
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/${psicologoId}/${fechaISO}`, {
-                    headers: getAuthHeaders() // ✅ Token agregado
+                    headers: getAuthHeaders() 
                 });
                 if (res.ok) {
                     const data = await res.json();
@@ -77,7 +74,6 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
         cargarDisponibilidad();
     }, [fecha, psicologoId]);
 
-    // 🔥 VERIFICAR DISPONIBILIDAD PARA PINTAR DÍA
     const tieneDisponibilidad = (date) => {
         const fechaLocal = formatearFechaLocal(date);
         return fechasDisponibles.includes(fechaLocal);
@@ -121,7 +117,7 @@ const SeleccionarCita = ({ psicologoId, nombrePsicologo }) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/reservar`, {
                 method: 'POST',
-                headers: getAuthHeaders(), // ✅ Token agregado (reemplaza el Content-Type anterior)
+                headers: getAuthHeaders(),
                 body: JSON.stringify({
                     pacienteId: paciente.id,
                     psicologoId,

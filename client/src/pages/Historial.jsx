@@ -9,7 +9,6 @@ const Historial = () => {
     const [loading, setLoading] = useState(true);
     const usuario = JSON.parse(localStorage.getItem('usuario'));
 
-    // ✅ Helper para obtener headers con token
     const getAuthHeaders = () => ({
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'

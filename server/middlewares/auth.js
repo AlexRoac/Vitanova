@@ -1,15 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-// ============================================================
-// MIDDLEWARE CENTRALIZADO DE AUTENTICACIÓN Y AUTORIZACIÓN
-// Archivo: server/middlewares/auth.js
-//
-// CORRECCIONES APLICADAS:
-//  - [CRÍTICO] Elimina el fallback inseguro 'tu_secreto'
-//  - [CRÍTICO] Provee verificarToken para proteger todas las rutas
-//  - [CRÍTICO] Provee verificarRol para autorización por rol en el servidor
-// ============================================================
-
 // Validación temprana: si no existe JWT_SECRET el servidor no debe arrancar
 if (!process.env.JWT_SECRET) {
   console.error("❌ FATAL: La variable de entorno JWT_SECRET no está definida.");
@@ -45,8 +35,6 @@ const verificarToken = (req, res, next) => {
  * Factory que devuelve un middleware que comprueba el rol del usuario
  * directamente desde el JWT (nunca desde el body ni desde localStorage).
  *
- * Uso:  router.get('/ruta', verificarToken, verificarRol('admin'), handler)
- *       router.get('/ruta', verificarToken, verificarRol('admin', 'psicologo'), handler)
  */
 const verificarRol = (...rolesPermitidos) => {
   return (req, res, next) => {

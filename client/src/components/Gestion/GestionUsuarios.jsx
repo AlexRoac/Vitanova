@@ -56,7 +56,7 @@ function Gestion() {
           confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
-        return; // Cortamos la ejecución
+        return;
       }
     }
 
@@ -85,11 +85,10 @@ function Gestion() {
           confirmButtonColor: '#3a7d8c',
           scrollbarPadding: false
         });
-        return; // Cortamos la ejecución
+        return;
       }
     }
 
-    // SweetAlert para confirmar eliminación
     const confirmacion = await Swal.fire({
       title: '¿Estás seguro?',
       text: "No podrás revertir esto. Se eliminará permanentemente al usuario.",

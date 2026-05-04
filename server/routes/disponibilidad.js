@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const transporter = require('../utils/mailer');
-const { verificarToken, verificarRol } = require('../middlewares/auth'); // ✅ Middleware JWT
+const { verificarToken, verificarRol } = require('../middlewares/auth');
 
-// 1. OBTENER HORARIOS DISPONIBLES ✅ Cualquier usuario autenticado
 router.get('/:psicologoId/:fecha', verificarToken, async (req, res) => {
     const { psicologoId, fecha } = req.params;
     try {
@@ -20,9 +19,18 @@ router.get('/:psicologoId/:fecha', verificarToken, async (req, res) => {
     }
 });
 
-// 2. GUARDAR O EDITAR HORARIOS ✅ Solo psicólogos
 router.post('/configurar', verificarToken, verificarRol('psicologo', 'admin'), async (req, res) => {
     const { psicologoId, fecha, horas } = req.body;
+    const { id: idSolicitante, rol } = req.usuario.usuario;
+
+    if (rol === 'psicologo' && String(idSolicitante) !== String(psicologoId)) {
+        return res.status(403).json({ error: 'Solo puedes configurar tus propios horarios.' });
+    }
+
+    if (!psicologoId || !fecha) {
+        return res.status(400).json({ error: 'psicologoId y fecha son obligatorios.' });
+    }
+
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
@@ -50,9 +58,19 @@ router.post('/configurar', verificarToken, verificarRol('psicologo', 'admin'), a
     }
 });
 
-// 3. RESERVAR CITA ✅ Solo pacientes autenticados
+// 3. RESERVAR CITA 
 router.post('/reservar', verificarToken, verificarRol('paciente', 'admin'), async (req, res) => {
     const { pacienteId, psicologoId, fecha, hora } = req.body;
+    const { id: idSolicitante, rol } = req.usuario.usuario;
+
+    if (rol === 'paciente' && String(idSolicitante) !== String(pacienteId)) {
+        return res.status(403).json({ error: 'No puedes reservar una cita a nombre de otro paciente.' });
+    }
+
+    if (!pacienteId || !psicologoId || !fecha || !hora) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+
     const client = await pool.connect();
 
     try {

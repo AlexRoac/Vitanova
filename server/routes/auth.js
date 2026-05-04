@@ -12,15 +12,10 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // HELPERS DE VALIDACIÓN
 // ============================================================
 
-/**
- * Valida formato básico de email.
- * Usamos regex sencillo; para producción considera usar la librería 'validator'.
- */
 const esEmailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 /**
  * Valida que la contraseña tenga al menos 8 caracteres.
- * Puedes agregar más reglas (mayúscula, número, símbolo) según tus requisitos.
  */
 const esPasswordValida = (password) =>
   typeof password === "string" && password.trim().length >= 8;
@@ -48,7 +43,6 @@ router.post("/login", async (req, res) => {
       [email]
     );
 
-    // NOTA DE SEGURIDAD: respuesta genérica para no revelar si el email existe
     if (result.rows.length === 0) {
       return res.status(400).json({ msg: "Credenciales incorrectas." });
     }
@@ -238,10 +232,6 @@ router.post("/google", async (req, res) => {
 // ============================================================
 // PUT /api/auth/completar-perfil
 //
-// CORRECCIÓN CRÍTICA (IDOR):
-//  - Antes: recibía :id desde la URL → cualquiera podía editar a otro usuario
-//  - Ahora: requiere JWT válido y toma el id del propio token
-//  - El parámetro :id del URL fue ELIMINADO completamente
 // ============================================================
 router.put("/completar-perfil", verificarToken, async (req, res) => {
   try {

@@ -4,14 +4,6 @@ const pool = require("../db");
 const { verificarToken, verificarRol } = require("../middlewares/auth");
 
 // ============================================================
-// CORRECCIONES APLICADAS:
-//  - [CRÍTICO] Todas las rutas protegidas con verificarToken
-//  - [CRÍTICO] IDOR corregido: un paciente solo puede ver SUS citas
-//  - [CRÍTICO] Un psicólogo solo puede ver SUS citas
-//  - [ALTO]    Los errores internos ya no se exponen al cliente
-// ============================================================
-
-// ============================================================
 // GET /api/citas/paciente/:id
 // Un paciente solo puede ver sus propias citas.
 // Un admin o psicólogo puede ver las de cualquiera.
@@ -57,7 +49,6 @@ router.get("/psicologo/:id", verificarToken, async (req, res) => {
   const { id } = req.params;
   const { id: idSolicitante, rol } = req.usuario.usuario;
 
-  // IDOR: solo el propio psicólogo o admin pueden acceder
   if (rol === "psicologo" && String(idSolicitante) !== String(id)) {
     return res.status(403).json({ error: "No tienes permiso para ver las citas de otro psicólogo." });
   }

@@ -9,7 +9,7 @@ const SelectorPsicologo = ({ alSeleccionar }) => {
             try {
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/psicologos`, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}` // ✅ Token agregado
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 });
                 if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);

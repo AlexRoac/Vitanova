@@ -158,7 +158,6 @@ const AutomatizarHorarios = () => {
 
     const [excepciones, setExcepciones] = useState([]);
 
-    // ✅ Helper centralizado para headers con token
     const getAuthHeaders = () => ({
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'
@@ -219,12 +218,11 @@ const AutomatizarHorarios = () => {
 
         try {
             let errores = 0;
-            // ✅ Token obtenido una sola vez antes del loop
             const headers = getAuthHeaders();
             for (const item of payload) {
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/disponibilidad/configurar`, {
                     method: 'POST',
-                    headers, // ✅ Token agregado
+                    headers, 
                     body: JSON.stringify({ psicologoId, fecha: item.fecha, horas: item.horas })
                 });
                 if (!res.ok) errores++;

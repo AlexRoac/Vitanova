@@ -1,13 +1,11 @@
 require("dotenv").config();
 const { Pool } = require("pg");
 
-// Si existe DATABASE_URL (Railway), la usamos directamente. 
-// Si no, usamos el objeto con localhost (Tu PC).
 const pool = new Pool(
   process.env.DATABASE_URL
     ? {
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }, // REQUERIDO para Railway
+        ssl: { rejectUnauthorized: false },
       }
     : {
         user: process.env.DB_USER,

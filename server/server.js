@@ -1,17 +1,5 @@
-// ============================================================
-// server.js — VERSIÓN CORREGIDA
-//
-// CORRECCIONES APLICADAS:
-//  - [ALTO]    Agrega helmet (cabeceras de seguridad HTTP)
-//  - [ALTO]    Agrega rate limiting en rutas de auth
-//  - [ALTO]    Valida variables de entorno al arrancar
-//  - [BAJO]    Manejo de cierre graceful (SIGTERM para Railway)
-// ============================================================
-
-// Paso 1: Cargar variables de entorno PRIMERO
 require("dotenv").config();
 
-// Paso 2: Validar variables de entorno críticas antes de iniciar nada
 const REQUIRED_ENV_VARS = [
   "JWT_SECRET",
   "GOOGLE_CLIENT_ID",
@@ -66,7 +54,6 @@ app.use(
 );
 
 // ─── 3. Rate Limiting ───────────────────────────────────────────────────────
-// Límite estricto para login y registro (previene fuerza bruta)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 10,                   // máximo 10 intentos por IP
@@ -108,7 +95,6 @@ app.get("/", (req, res) => {
 });
 
 // ─── 6. Manejo global de errores ────────────────────────────────────────────
-// IMPORTANTE: nunca exponer el stack en producción
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Error interno del servidor." });

@@ -1,10 +1,3 @@
-// ============================================================
-// pages/CompletarPerfil.jsx — VERSIÓN CORREGIDA
-//
-// CORRECCIÓN APLICADA:
-//  - El endpoint ya NO recibe el :id en la URL
-//  - El backend obtiene el id del JWT, no del cliente
-// ============================================================
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CompletarPerfilForm from "../components/CompletarPerfilForm/CompletarPerfilForm";

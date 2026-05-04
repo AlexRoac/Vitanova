@@ -4,13 +4,6 @@ const pool = require("../db");
 const { verificarToken, verificarRol } = require("../middlewares/auth");
 
 // ============================================================
-// CORRECCIONES APLICADAS:
-//  - Usa el middleware centralizado (elimina la copia local de verificarToken)
-//  - Solo psicólogos pueden crear notas
-//  - IDOR: un psicólogo solo puede ver notas de SUS pacientes
-// ============================================================
-
-// ============================================================
 // POST /api/notas
 // Solo psicólogos crean notas clínicas
 // ============================================================

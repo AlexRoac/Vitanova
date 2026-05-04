@@ -4,7 +4,7 @@ const pool = require("../db");
 const transporter = require("../utils/mailer");
 const { verificarToken, verificarRol } = require("../middlewares/auth");
 
-// ─── Utilidad: cancelar citas futuras de un psicólogo ────────────────────────
+// ─── Cancelar citas futuras de un psicólogo ────────────────────────
 async function cancelarCitasPsicologo(client, psicologoId) {
   const citasResult = await client.query(
     `SELECT c.id, c.fecha, c.hora, c.paciente_id,
@@ -160,6 +160,17 @@ router.delete(
         return res.status(404).json({ error: "Usuario no encontrado." });
       }
 
+      // [SEGURIDAD] Impedir eliminar al último administrador desde la API
+      if (String(usuarioResult.rows[0].id_rol) === "3") {
+        const adminCount = await client.query(
+          "SELECT COUNT(*) FROM usuarios WHERE id_rol = 3"
+        );
+        if (parseInt(adminCount.rows[0].count) <= 1) {
+          await client.query("ROLLBACK");
+          return res.status(400).json({ error: "No puedes eliminar al único administrador del sistema." });
+        }
+      }
+
       let citasCanceladas = 0;
       if (String(usuarioResult.rows[0].id_rol) === "2") {
         citasCanceladas = await cancelarCitasPsicologo(client, id);
@@ -210,6 +221,17 @@ router.put(
 
         const rolActual = String(actual.rows[0].id_rol);
         const rolNuevo  = String(user.rol);
+
+        // [SEGURIDAD] Impedir degradar al último administrador
+        if (rolActual === "3" && rolNuevo !== "3") {
+          const adminCount = await client.query(
+            "SELECT COUNT(*) FROM usuarios WHERE id_rol = 3"
+          );
+          if (parseInt(adminCount.rows[0].count) <= 1) {
+            await client.query("ROLLBACK");
+            return res.status(400).json({ error: "No puedes quitarle el rol al único administrador del sistema." });
+          }
+        }
 
         if (rolActual === "2" && rolNuevo !== "2") {
           totalCitasCanceladas += await cancelarCitasPsicologo(client, user.id);
