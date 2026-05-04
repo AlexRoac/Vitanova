@@ -582,7 +582,13 @@
 
 @media (max-width: 420px) {
   .horas-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .hora-item {
+    padding: 9px 4px;
+    font-size: 0.78rem;
   }
 }
 

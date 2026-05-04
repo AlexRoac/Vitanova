@@ -343,6 +343,36 @@
     color: #fff;
 }
 
+@media (max-width: 600px) {
+    .hpd-row {
+        flex-direction: column;
+        gap: 6px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f0f4f8;
+    }
+
+    .hpd-nombre {
+        width: auto;
+        padding-top: 0;
+        font-size: 0.8rem;
+        color: #60A6BF;
+    }
+
+    .horas-por-dia {
+        gap: 4px;
+    }
+
+    .hpd-horas {
+        gap: 5px;
+    }
+
+    .hpd-hora {
+        padding: 7px 9px;
+        font-size: 0.75rem;
+        border-radius: 7px;
+    }
+}
+
 /* Rango de fechas */
 .rango-fechas {
     display: flex;
