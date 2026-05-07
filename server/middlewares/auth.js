@@ -14,8 +14,11 @@ if (!process.env.JWT_SECRET) {
  * Si no, responde 401 o 403 y corta la cadena de middlewares.
  */
 const verificarToken = (req, res, next) => {
+  // Primero busca en la cookie httpOnly (más seguro)
+  // Si no, acepta el header Authorization: Bearer <token> (compatibilidad con Postman/móviles)
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // "Bearer <token>"
+  const tokenFromHeader = authHeader && authHeader.split(" ")[1];
+  const token = req.cookies?.token || tokenFromHeader;
 
   if (!token) {
     return res.status(401).json({ msg: "Acceso denegado. Se requiere autenticación." });

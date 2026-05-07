@@ -43,7 +43,7 @@ function RegisterForm({ step, formData, handleChange, nextStep, prevStep, handle
               <GoogleLogin
                 onSuccess={onGoogleSuccess}
                 onError={onGoogleError}
-                width="100%"
+                width={360}
                 text="signup_with"
                 shape="circle"
               />

@@ -19,6 +19,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -47,7 +48,7 @@ app.use(
       }
       return callback(null, true);
     },
-    credentials: true,
+    credentials: true,   // ← necesario para que el browser envíe/reciba cookies
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -80,8 +81,9 @@ app.use("/api/auth/login", authLimiter);
 app.use("/api/auth/register", authLimiter);
 app.use("/api", apiLimiter);
 
-// ─── 4. Body parser ─────────────────────────────────────────────────────────
+// ─── 4. Body parser + Cookie parser ─────────────────────────────────────────
 app.use(express.json({ limit: "10kb" })); // Limita el tamaño del body para prevenir ataques
+app.use(cookieParser());                  // Permite leer req.cookies en las rutas
 
 // ─── 5. Rutas ───────────────────────────────────────────────────────────────
 app.use("/api/auth", require("./routes/auth"));
@@ -102,16 +104,27 @@ app.use((err, req, res, next) => {
 
 // ─── 7. Inicio del servidor ─────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
-});
+let server;
+
+// Solo arrancamos el servidor si este archivo es el punto de entrada,
+// no cuando lo importa un test con supertest.
+if (require.main === module) {
+  server = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
+  });
+}
 
 // ─── 8. Cierre graceful (Railway envía SIGTERM al detener el contenedor) ────
 process.on("SIGTERM", () => {
   console.log("🛑 SIGTERM recibido. Cerrando servidor...");
-  server.close(() => {
-    console.log("✅ Servidor cerrado correctamente.");
-    // El pool de pg se cierra cuando el proceso termina
+  if (server) {
+    server.close(() => {
+      console.log("✅ Servidor cerrado correctamente.");
+      process.exit(0);
+    });
+  } else {
     process.exit(0);
-  });
+  }
 });
+
+module.exports = app;

@@ -1,7 +1,9 @@
-import React from 'react';
+import { useAuth } from "../../context/AuthContext";
 import "./Dashboard.css";
 
-function DashboardAdmin({ usuario }) {
+function DashboardAdmin() {
+  const { usuario } = useAuth();
+
   return (
     <div className="container-cards">
       <h1>Panel de Control (Admin): {usuario.nombre}</h1>

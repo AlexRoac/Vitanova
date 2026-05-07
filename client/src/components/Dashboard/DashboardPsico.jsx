@@ -1,16 +1,9 @@
-import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 import "./Dashboard.css";
 
 function DashboardPsico() {
 
-    const [usuario, setUsuario] = useState(null);
-
-    useEffect(() => {
-        const usuarioGuardado = localStorage.getItem("usuario");
-        if (usuarioGuardado) {
-            setUsuario(JSON.parse(usuarioGuardado));
-        }
-    }, []);
+    const { usuario } = useAuth();
 
     return (
         <>

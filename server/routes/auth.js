@@ -8,9 +8,17 @@ const { verificarToken } = require("../middlewares/auth");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// ============================================================
-// HELPERS DE VALIDACIÓN
-// ============================================================
+// ─── Configuración de la cookie segura ──────────────────────────────────────
+// httpOnly: el JS del cliente NO puede leer ni robar el token
+// secure:   solo viaja por HTTPS en producción
+// sameSite: protege contra CSRF
+const COOKIE_OPTS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+  maxAge: 2 * 60 * 60 * 1000, // 2 horas (igual que el JWT)
+  path: "/",
+};
 
 const esEmailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -63,9 +71,12 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
 
+    // Enviar el token en una cookie httpOnly (no accesible desde JS del cliente)
+    res.cookie("token", token, COOKIE_OPTS);
+
     res.json({
       msg: "Login exitoso",
-      token,
+      token, // Se mantiene en el body para compatibilidad con el header Authorization
       user: {
         id: user.id_usuario,
         nombre: user.nombre,
@@ -211,6 +222,9 @@ router.post("/google", async (req, res) => {
     const sessionToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
     const perfilCompleto = user.telefono !== null && user.telefono !== "";
 
+    // Enviar el token en una cookie httpOnly
+    res.cookie("token", sessionToken, COOKIE_OPTS);
+
     res.json({
       msg: "Login con Google exitoso",
       token: sessionToken,
@@ -266,6 +280,15 @@ router.put("/completar-perfil", verificarToken, async (req, res) => {
     console.error("Error al completar perfil:", error);
     res.status(500).json({ msg: "Error interno del servidor." });
   }
+});
+
+// ============================================================
+// POST /api/auth/logout
+// Borra la cookie httpOnly del servidor — el cliente no puede hacerlo por sí solo
+// ============================================================
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", { ...COOKIE_OPTS, maxAge: 0 });
+  res.json({ msg: "Sesión cerrada correctamente." });
 });
 
 module.exports = router;

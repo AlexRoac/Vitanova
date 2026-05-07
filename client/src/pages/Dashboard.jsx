@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useAuth } from "../context/AuthContext";
 import NavBar from '../components/NavBar/navbar';
 import Footer from '../components/Footer/Footer';
 import DashboardAdmin from '../components/Dashboard/DashboardAdmin';
@@ -6,14 +6,7 @@ import DashboardPsico from '../components/Dashboard/DashboardPsico';
 import DashboardUser from '../components/Dashboard/DashboardUser';
 
 function Dashboard() {
-  const [usuario, setUsuario] = useState(null);
-
-  useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      setUsuario(JSON.parse(usuarioGuardado));
-    }
-  }, []);
+  const { usuario } = useAuth();
 
   if (!usuario) return <div>Cargando...</div>;
 

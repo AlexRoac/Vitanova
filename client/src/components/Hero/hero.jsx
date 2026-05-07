@@ -1,34 +1,20 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./hero.css";
-import {default as psicologia} from "../../assets/psicologia.png";
+import { default as psicologia } from "../../assets/psicologia.png";
 
 function Hero() {
     const navigate = useNavigate();
-    
-    // Guardamos todo el objeto del usuario, no solo si está logueado
-    const [usuario, setUsuario] = useState(null);
+    const { usuario, logout } = useAuth();
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        const usuarioGuardado = localStorage.getItem("usuario");
-        
-        if (token && usuarioGuardado) {
-            setUsuario(JSON.parse(usuarioGuardado));
-        } else {
-            setUsuario(null);
-        }
-    }, []);
-
-    const handleLogin = () => navigate("/login");
+    const handleLogin    = () => navigate("/login");
     const handleRegister = () => navigate("/register");
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("usuario");
-        setUsuario(null);
+    const handleLogout = async () => {
+        await logout();
         navigate("/login");
     };
+
     return (
     <>
     <section className="hero">
@@ -40,19 +26,19 @@ function Hero() {
             con el mismo compromiso que tu salud física
             </h1>
             <p>
-            Ignorar el problema no lo hace desaparecer. 
+            Ignorar el problema no lo hace desaparecer.
             Da el primer paso hacia tu bienestar emocional.
             </p>
             <div className="hero-buttons">
             {usuario ? (
-                <button 
+                <button
                     onClick={() => {
                         if (usuario.rol === "psicologo" || usuario.id_rol === 2) {
-                            navigate("/historial"); // vista del psicólogo
+                            navigate("/historial");
                         } else {
-                            navigate("/agendar"); // paciente
+                            navigate("/agendar");
                         }
-                    }} 
+                    }}
                     className="btn-primary"
                 >
                     Agendar cita
@@ -71,6 +57,7 @@ function Hero() {
         </div>
     </section>
     </>
-    )
+    );
 }
+
 export default Hero;
