@@ -39,11 +39,11 @@ function App() {
             <Route element={<PublicRoute />}>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/completar-perfil" element={<CompletarPerfil />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={['paciente', 'psicologo', 'admin']} />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/completar-perfil" element={<CompletarPerfil />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={['paciente']} />}>
